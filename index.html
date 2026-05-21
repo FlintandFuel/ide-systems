@@ -518,11 +518,14 @@
       right: 0;
       z-index: 100;
       padding: 22px 0;
-      background: transparent;
+      background: rgba(8, 18, 44, 0.72);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
       color: var(--text-strong);
+      transition: background 0.3s ease, padding 0.3s ease;
     }
     nav.scrolled {
-      background: rgba(8, 18, 44, 0.92);
+      background: rgba(8, 18, 44, 0.95);
       color: #FFFFFF;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -885,12 +888,12 @@
       <div class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; text-align: center;">
 
         <div class="fade-up">
-          <div class="stat-number" data-target="40" data-suffix="+">0</div>
+          <div class="stat-number" data-target="40" data-suffix="+">40+</div>
           <div class="stat-label" style="color: rgba(255,255,255,0.82); font-weight: 600;" data-i18n="stat-years">years in the banking systems environment</div>
         </div>
 
         <div class="fade-up delay-1">
-          <div class="stat-number" data-target="2">0</div>
+          <div class="stat-number" data-target="2">2</div>
           <div class="stat-label" style="color: rgba(255,255,255,0.82);" data-i18n="stat-languages">Languages: English<br>and Afrikaans</div>
         </div>
 
@@ -1023,7 +1026,7 @@
 
       <div style="max-width: 640px; margin-bottom: 72px;">
         <span class="section-label fade-up" data-i18n="cap-label">Platform Capabilities</span>
-        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="cap-h2">A complete system. No add-ons required.</h2>
+        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="cap-h2">A complete system.<br>No add-ons required.</h2>
         <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;" data-i18n="cap-intro">Every feature listed below is included in Paxiss as standard. Nothing is gated behind an upgrade tier or a separate module.</p>
       </div>
 
@@ -1688,7 +1691,7 @@
         'feat-f8-body': 'Customer due diligence, KYC management, and transaction monitoring built into the daily workflow, not bolted on later.',
         'feat-f9-title': 'Management Dashboards',
         'feat-f9-body': 'Board-ready summaries and operational views for your management team, in real time, without spreadsheets.',
-        'cap-label': 'Platform Capabilities', 'cap-h2': 'A complete system. No add-ons required.',
+        'cap-label': 'Platform Capabilities', 'cap-h2': 'A complete system.<br>No add-ons required.',
         'cap-intro': 'Every feature listed below is included in Paxiss as standard. Nothing is gated behind an upgrade tier or a separate module.',
         'cap-cat-core': 'Core Banking', 'cap-1': 'Member registration and lifecycle management',
         'cap-2': 'Share account administration', 'cap-3': 'Configurable loan products',
@@ -1764,7 +1767,7 @@
         'ctx-label': 'Die Probleem',
         'ctx-h2': 'Koöperatiewe bankwese in Suid-Afrika word deur elke bestaande stelsel onderbenut.',
         'ctx-p1': 'Dertig geregistreerde koöperatiewe finansële instellings hou meer as R656 miljoen in ledestortings. Hulle werk onder die Wet op Koöperatiewe Banke en is onderhewig aan die Prudensiele Owerheid. Die risiko is werklik.',
-        'ctx-p2': 'Tog is die meeste sagteware wat vir hulle beskikbaar is, vir kommersiële banke, globale kredietunies of informele spaargroepe gebou. Nie een spesifiek ontwerp nie. Generiese platforms vereis duur aanpassing. Buitelandse oplossings ken nie Suid-Afrikaanse regulasie nie. Plaaslike ontwikkelaars het dikwels nie die nodige kennis en ervaring om 'n gehalte produk te lewer nie.',
+        'ctx-p2': "Tog is die meeste sagteware wat vir hulle beskikbaar is, vir kommersiële banke, globale kredietunies of informele spaargroepe gebou. Nie een spesifiek ontwerp nie. Generiese platforms vereis duur aanpassing. Buitelandse oplossings ken nie Suid-Afrikaanse regulasie nie. Plaaslike ontwikkelaars het dikwels nie die nodige kennis en ervaring om 'n gehalte produk te lewer nie.",
         'ctx-p3': 'Die instellings wat die belangrikste werk in Suid-Afrika doen, naamlik gemeenskapsontwikkeling, lidbemagtiging, finansële insluiting in onderbedeelde gebiede, werk met gereedskap wat nooit vir hulle ontwerp is nie.',
         'feat-label': 'Paxiss — Wat Dit Doen', 'feat-h2': "Alles wat 'n KFI nodig het. <br>Niks onnodig nie.",
         'feat-copy': "Paxiss dek die volle operasionele veld van 'n gereguleerde koöperatiewe finansële instelling, gebou sodat u span van dag een af met vertroue kan werk.",
