@@ -209,13 +209,17 @@
     /* Scroll offset for fixed nav */
     [id] { scroll-margin-top: 88px; }
 
-    /* Fade-up animation */
+    /* Fade-up animation — start visible, animate only after JS marks body ready */
     .fade-up {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body.js-ready .fade-up {
       opacity: 0;
       transform: translateY(28px);
       transition: opacity 0.75s ease, transform 0.75s ease;
     }
-    .fade-up.visible {
+    body.js-ready .fade-up.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -1642,6 +1646,9 @@
        JAVASCRIPT
   ============================================================ -->
   <script>
+    // Mark body as JS-ready so fade-up animations activate
+    document.body.classList.add('js-ready');
+
     // ============================================================
     // TRANSLATIONS
     // ============================================================
