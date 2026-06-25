@@ -770,6 +770,34 @@
     .cap-feat-name { font-size: 15px; color: #1A1A1A; font-weight: 500; line-height: 1.4; }
     .cap-tick { flex-shrink: 0; margin-left: 20px; }
 
+    /* Feature accordion */
+    .feat-accordion { border-top: 1px solid #D6D0C8; }
+    .feat-accordion:first-child { border-top: 2px solid #E05A1E; }
+    .feat-acc-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: opacity 0.2s ease;
+    }
+    .feat-acc-trigger:hover { opacity: 0.8; }
+    .feat-acc-icon { flex-shrink: 0; transition: transform 0.35s ease; }
+    .feat-accordion.acc-open .feat-acc-icon { transform: rotate(45deg); }
+    .feat-acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.45s ease; }
+    .feat-acc-inner { padding: 0 0 32px 0; }
+    .feat-acc-item { padding: 16px 24px; border-left: 3px solid #E05A1E; margin-bottom: 12px; background: #F9F8F6; border-radius: 0 12px 12px 0; }
+    .feat-acc-item:last-child { margin-bottom: 0; }
+
+    @media (max-width: 640px) {
+      .feat-acc-item { padding: 14px 16px; }
+    }
+
     /* Who It's For cards — near-white bg (segment-card) needs dark text */
     .who-card { color: #0B2048; }
     .who-card h3.font-display { color: #0B2048; }
@@ -798,16 +826,15 @@
   ============================================================ -->
   <nav id="main-nav">
     <div class="nav-inner">
-      <a href="/" style="text-decoration: none;">
-        <span class="nav-logo-main">Paxiss</span>
-        <span class="nav-logo-sub">by IDE Systems</span>
+      <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 16px;">
+        <img src="PAXISS-logo-white.png" alt="Paxiss" style="height: 32px; width: auto;">
+        <span style="width: 1px; height: 24px; background: rgba(255,255,255,0.2);"></span>
+        <img src="IDE-Systems-Logo-White.png" alt="IDE Systems" style="height: 36px; width: auto;">
       </a>
 
       <div class="nav-links">
         <a href="#features" class="nav-link" data-i18n="nav-solutions">Solutions</a>
-        <a href="#capabilities" class="nav-link" data-i18n="nav-capabilities">Capabilities</a>
         <a href="#who-its-for" class="nav-link" data-i18n="nav-who">Who It's For</a>
-        <a href="#compliance" class="nav-link" data-i18n="nav-compliance">Compliance</a>
         <a href="#deployment" class="nav-link" data-i18n="nav-deployment">Deployment</a>
         <a href="#faq" class="nav-link" data-i18n="nav-faq">FAQ</a>
         <a href="#consultation" class="btn-primary" style="padding: 10px 22px; font-size: 14px;"><span data-i18n="nav-cta">Book Free Consultation</span></a>
@@ -834,9 +861,7 @@
       </svg>
     </button>
     <a href="#features" data-i18n="nav-solutions">Solutions</a>
-    <a href="#capabilities" data-i18n="nav-capabilities">Capabilities</a>
     <a href="#who-its-for" data-i18n="nav-who">Who It's For</a>
-    <a href="#compliance" data-i18n="nav-compliance">Compliance</a>
     <a href="#deployment" data-i18n="nav-deployment">Deployment</a>
     <a href="#faq" data-i18n="nav-faq">FAQ</a>
     <a href="#consultation" data-i18n="nav-cta">Book Free Consultation</a>
@@ -867,7 +892,7 @@
       </h1>
 
       <p class="hero-copy fade-up delay-2" data-i18n="hero-copy">
-        Paxiss is purpose-built core banking for South African cooperative financial institutions. SARB compliant, fully customisable, locally supported. From a Pretoria team with 40 years inside South African banking.
+        Paxiss is purpose-built core banking for South African cooperative financial institutions. Fully customisable, locally supported. From a Pretoria team with 40 years experience in banking.
       </p>
 
       <div class="hero-actions fade-up delay-3">
@@ -880,136 +905,262 @@
   </section>
 
 
-  <!-- ============================================================
-       STATS BAR
-  ============================================================ -->
-  <section style="background: linear-gradient(135deg, #05112d 0%, #081c3f 42%, #0d2d62 100%); padding: 80px 32px;">
-    <div style="max-width: 1180px; margin: 0 auto;">
-      <div class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; text-align: center;">
-
-        <div class="fade-up">
-          <div class="stat-number" data-target="40" data-suffix="+">40+</div>
-          <div class="stat-label" style="color: rgba(255,255,255,0.82); font-weight: 600;" data-i18n="stat-years">years in the banking systems environment</div>
-        </div>
-
-        <div class="fade-up delay-1">
-          <div class="stat-number" data-target="2">2</div>
-          <div class="stat-label" style="color: rgba(255,255,255,0.82);" data-i18n="stat-languages">Languages: English<br>and Afrikaans</div>
-        </div>
-
-        <div class="fade-up delay-3">
-          <div class="stat-number" style="color: #E05A1E;" data-i18n="stat-free">Free</div>
-          <div class="stat-label" style="color: rgba(255,255,255,0.82);" data-i18n="stat-consult">Initial consultation,<br>every time</div>
-        </div>
-
-      </div>
-    </div>
-  </section>
 
 
   <!-- ============================================================
-       CONTEXT — WHY IT MATTERS
-  ============================================================ -->
-  <section id="context" style="background: #F5F4F1; padding: 120px 32px;">
-    <div style="max-width: 1180px; margin: 0 auto;">
-      <div class="grid-2col" style="grid-template-columns: 1fr; max-width: 840px; margin: 0 auto;">
-
-        <div>
-          <span class="section-label fade-up" data-i18n="ctx-label">The Problem</span>
-          <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 28px; color: #0B2048;" data-i18n="ctx-h2">
-            Cooperative banking in South Africa is underserved by every system that exists.
-          </h2>
-          <p class="fade-up delay-2" style="color: #4B5563; font-size: 17px; line-height: 1.8; margin-bottom: 20px;" data-i18n="ctx-p1">
-            Thirty registered cooperative financial institutions hold over R656 million in member deposits. They operate under the Cooperative Banks Act and answer to the Prudential Authority. The stakes are real.
-          </p>
-          <p class="fade-up delay-2" style="color: #4B5563; font-size: 17px; line-height: 1.8; margin-bottom: 20px;" data-i18n="ctx-p2">
-            Yet most software available to them was built for commercial banks, global credit unions, or informal savings groups. Not quite any of them. Generic platforms require expensive adaptation. Foreign solutions don't know South African regulation. Local developers often lack the banking depth to build something trustworthy.
-          </p>
-          <p class="fade-up delay-3" style="color: #1A1A1A; font-size: 17px; line-height: 1.8; font-weight: 500;" data-i18n="ctx-p3">
-            The institutions doing the most important work in South Africa, community upliftment, member empowerment, financial inclusion in underserved areas, are making do with tools that were never designed for them.
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================================
-       WHAT IS PAXISS — FEATURES
+       WHAT IS PAXISS — FEATURES (ACCORDION)
   ============================================================ -->
   <section id="features" style="background: #FFFFFF; padding: 120px 32px;">
     <div style="max-width: 1180px; margin: 0 auto;">
 
       <div style="max-width: 640px; margin-bottom: 88px;">
-        <span class="section-label fade-up" data-i18n="feat-label">Paxiss — What It Does</span>
-        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="feat-h2">
+        <span class="section-label fade-up">Paxiss Feature Catalogue</span>
+        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;">
           Everything a CFI needs. <br>Nothing it doesn't.
         </h2>
-        <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;" data-i18n="feat-copy">
+        <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;">
           Paxiss covers the full operational surface of a regulated cooperative financial institution, built so your team can run confidently from day one.
         </p>
       </div>
 
-      <!-- Group 1: Core Banking -->
-      <div style="margin-bottom: 72px;">
-        <div style="border-top: 2px solid #E05A1E; padding-top: 10px; margin-bottom: 40px;" class="fade-up">
-          <span class="font-display" style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #E05A1E;" data-i18n="feat-g1">Core Banking</span>
+      <div class="feature-accordions fade-up" style="max-width: 920px;">
+
+        <!-- Core Banking Operations -->
+        <div class="feat-accordion" style="border-top: 2px solid #E05A1E;">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Core Banking Operations</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Client Profile Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Capture and maintain comprehensive client profile information, including personal details, contact information, identification records, account relationships, and regulatory data.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Account Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Open, maintain, and manage accounts for all product types offered by the institution. Account functionality is driven by product definitions and client eligibility criteria.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Transaction Processing Engine</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">A comprehensive engine supporting deposits, withdrawals, transfers, payments, and fund transfers to external institutions. Also supports sundry transactions between general ledger accounts, as well as suspended, deferred, and automated transactions.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Standing Instructions</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Automate recurring client transactions based on predefined schedules. Instructions can continue indefinitely or terminate automatically when specified end criteria are met.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Cash Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Manage and control cash holdings issued to officials from the treasury. Tracks cash balances by denomination, records all movements, and supports end-of-day balancing and reconciliation. Multiple teller positions with full support for cash transfers between tellers and the treasury.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="feature-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;">
-          <div class="fade-up" style="border-top: 1px solid #D6D0C8; padding: 28px 24px 28px 0;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f1-title">Member Management</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f1-body">Full member lifecycle from registration to exit, with share accounts, FICA records, and KYC documentation in one place.</div>
-          </div>
-          <div class="fade-up delay-1" style="border-top: 1px solid #D6D0C8; padding: 28px 24px;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f2-title">Loan Products</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f2-body">Configurable loan types, repayment schedules, and arrears management. Adapted to your institution's specific lending rules and member needs.</div>
-          </div>
-          <div class="fade-up delay-2" style="border-top: 1px solid #D6D0C8; padding: 28px 0 28px 24px;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f3-title">Savings and Deposits</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f3-body">Share management, fixed deposits, and current accounts built to match the diversity of cooperative savings products.</div>
+
+        <!-- Product & Pricing Management -->
+        <div class="feat-accordion">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Product and Pricing Management</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Product Definition Engine</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">A flexible, user-definable product configuration facility that enables the institution to create and maintain unique financial products across various product classes, including savings, loans, investments, and transactional accounts.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Interest Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Interest structures are dynamically configurable on a per-product basis. Define and maintain interest calculation methods, rates, and related parameters for each product, allowing the system to automatically calculate and apply interest according to product-specific rules.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Fee Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Fees are fully user-definable, allowing authorised officials to configure fee structures and the rules governing their application. The system automatically calculates and applies the appropriate fees to transactions.</p>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Financial Management -->
+        <div class="feat-accordion">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Financial Management</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">General Ledger Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">A fully integrated general ledger facility automatically records all accounting entries arising from transactions, ensuring complete financial integrity and real-time financial reporting.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Sundry Transactions</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Authorised and mandated officials can perform controlled financial transactions directly between general ledger accounts, supporting operational and administrative financial activities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shareholding & Relationship Management -->
+        <div class="feat-accordion">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Shareholding and Relationship Management</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Shareholding Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Manage member shareholdings, including the issuance, maintenance, transfer, and redemption of shares. The system also supports the printing and management of share certificates.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Relationship Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Capture and maintain relationships between clients, accounts, and related parties, such as representatives, signatories, trustees, beneficiaries, and guardians. All compliance requirements applicable to clients are automatically enforced for related parties.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Pledge Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Manage and track pledged (ceded) accounts, including the registration, maintenance, and monitoring of third-party cessions and associated account restrictions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compliance & Regulatory Management -->
+        <div class="feat-accordion">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Compliance and Regulatory Management</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">FICA Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Comprehensive FICA management for all profiles, including clients and related parties. FICA-related documentation is stored electronically within the system for compliance, verification, and audit purposes.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">CODI Compliance</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Supports all data capture, validation, reporting, and submission requirements necessary to comply with the South African Corporation for Deposit Insurance (CODI) regulations.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Regulatory Data Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Ensures the capture and maintenance of all information required to meet regulatory, governance, and compliance obligations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document & Records Management -->
+        <div class="feat-accordion">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Document and Records Management</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Document Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Integrated document management for storing and managing client-related documents, including contracts, wills, trust deeds, identification documents, share certificates, and other supporting records directly within the system.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Electronic Record Retention</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Secure storage and retrieval of supporting documentation and historical records, providing a complete audit trail for regulatory and operational purposes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security, Control & Audit -->
+        <div class="feat-accordion">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Security, Control and Audit</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Security and Access Control</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Role-based security enables administrators to control access to functions, data, and transactions based on user roles and responsibilities.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Mandate Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Allows authorised officials to temporarily delegate specific rights and responsibilities to other officials under controlled and auditable conditions.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Audit and Forensic Tracking</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Comprehensive audit and forensic tracking records all user activities, transactions, approvals, amendments, and system access. The system maintains a complete audit trail showing who performed each action, when it was performed, and from which workstation or facility.</p>
+              </div>
+              <div class="feat-acc-item">
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Operational Monitoring</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Provides visibility into user activity, system usage, transaction history, and operational events to support governance, oversight, and risk management.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Language Support -->
+        <div class="feat-accordion" style="border-bottom: 1px solid #D6D0C8;">
+          <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Multi-Language Support</span>
+            <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="feat-acc-panel">
+            <div class="feat-acc-inner">
+              <div class="feat-acc-item">
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Dynamically switch the system between English and Afrikaans, with all screens, menus, messages, and reports displayed in the selected language.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Group 2: Governance and Compliance -->
-      <div style="margin-bottom: 72px;">
-        <div style="border-top: 2px solid #E05A1E; padding-top: 10px; margin-bottom: 40px;" class="fade-up">
-          <span class="font-display" style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #E05A1E;" data-i18n="feat-g2">Governance and Compliance</span>
-        </div>
-        <div class="feature-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;">
-          <div class="fade-up" style="border-top: 1px solid #D6D0C8; padding: 28px 24px 28px 0;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f4-title">User and Access Control</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f4-body">Role-based permissions, mandate numbers, login tracking, and full audit trails. Your governance structure, enforced in software.</div>
+      <!-- Key System Benefits -->
+      <div class="fade-up" style="margin-top: 72px; max-width: 920px;">
+        <h3 class="font-display" style="font-size: 21px; font-weight: 700; color: #0B2048; margin-bottom: 28px;">Key System Benefits</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px 40px;">
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Comprehensive end-to-end banking solution</span>
           </div>
-          <div class="fade-up delay-1" style="border-top: 1px solid #D6D0C8; padding: 28px 24px;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f5-title">Forensic Tracking</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f5-body">Every transaction, every change, every access: logged. Designed for institutions where accountability to members is non-negotiable.</div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Fully integrated accounting and general ledger</span>
           </div>
-          <div class="fade-up delay-2" style="border-top: 1px solid #D6D0C8; padding: 28px 0 28px 24px;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f6-title">General Ledger Integration</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f6-body">Automated GL with CODI-compliant reporting. Connects to external accounting and BI platforms without double-entry friction.</div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">User-definable products, fees, and interest structures</span>
           </div>
-        </div>
-      </div>
-
-      <!-- Group 3: Reporting and Intelligence -->
-      <div>
-        <div style="border-top: 2px solid #E05A1E; padding-top: 10px; margin-bottom: 40px;" class="fade-up">
-          <span class="font-display" style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #E05A1E;" data-i18n="feat-g3">Reporting and Intelligence</span>
-        </div>
-        <div class="feature-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;">
-          <div class="fade-up" style="border-top: 1px solid #D6D0C8; padding: 28px 24px 28px 0;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f7-title">Regulatory Reporting</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f7-body">Pre-built reports aligned to Prudential Authority submission requirements. No manual reformatting at quarter-end.</div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Built-in FICA and CODI compliance</span>
           </div>
-          <div class="fade-up delay-1" style="border-top: 1px solid #D6D0C8; padding: 28px 24px;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f8-title">FICA Compliance Tools</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f8-body">Customer due diligence, KYC management, and transaction monitoring built into the daily workflow, not bolted on later.</div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Complete audit and forensic tracking</span>
           </div>
-          <div class="fade-up delay-2" style="border-top: 1px solid #D6D0C8; padding: 28px 0 28px 24px;">
-            <div class="font-display" style="font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #0B2048;" data-i18n="feat-f9-title">Management Dashboards</div>
-            <div style="font-size: 16px; color: #6B7280; line-height: 1.7;" data-i18n="feat-f9-body">Board-ready summaries and operational views for your management team, in real time, without spreadsheets.</div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Integrated document management</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Multi-teller cash management</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Flexible relationship and shareholding management</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Automated recurring transactions</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Secure, role-based access control</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
+            <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Real-time transaction processing and financial posting</span>
           </div>
         </div>
       </div>
@@ -1018,57 +1169,6 @@
   </section>
 
 
-  <!-- ============================================================
-       CAPABILITIES TABLE
-  ============================================================ -->
-  <section id="capabilities" style="background: #F5F4F1; padding: 120px 32px;">
-    <div style="max-width: 1180px; margin: 0 auto;">
-
-      <div style="max-width: 640px; margin-bottom: 72px;">
-        <span class="section-label fade-up" data-i18n="cap-label">Platform Capabilities</span>
-        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="cap-h2">A complete system.<br>No add-ons required.</h2>
-        <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;" data-i18n="cap-intro">Every feature listed below is included in Paxiss as standard. Nothing is gated behind an upgrade tier or a separate module.</p>
-      </div>
-
-      <div class="cap-table fade-up delay-2">
-
-        <div class="cap-cat-header" data-i18n="cap-cat-core">Core Banking</div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-1">Member registration and lifecycle management</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-2">Share account administration</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-3">Configurable loan products</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-4">Loan repayment and arrears management</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-5">Fixed deposit management</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-6">Current account management</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-
-        <div class="cap-cat-header" data-i18n="cap-cat-compliance">Compliance and Regulation</div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-7">FICA compliance tools and KYC management</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-8">CODI-compliant financial reporting</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-9">Prudential Authority regulatory submissions</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-10">POPIA-aligned data handling</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-11">Full audit trail and immutable transaction log</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-12">Forensic transaction tracking</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-
-        <div class="cap-cat-header" data-i18n="cap-cat-security">Security and Access</div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-13">Role-based access control</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-14">User mandate management</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-15">Login and session tracking</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-
-        <div class="cap-cat-header" data-i18n="cap-cat-reporting">Reporting and Intelligence</div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-16">General ledger integration</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-17">Management dashboards (real-time data)</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-18">Pre-built regulatory reports</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-19">External BI tool integration</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-
-        <div class="cap-cat-header" data-i18n="cap-cat-infra">Infrastructure and Support</div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-20">SaaS and on-premise deployment options</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-21">English and Afrikaans interface</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-22">Web, desktop, and mobile access</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-23">Data migration support</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="cap-row"><span class="cap-feat-name" data-i18n="cap-24">Staff training and onboarding</span><span class="cap-tick"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="rgba(224,90,30,0.12)"/><path d="M7 11l3 3 5-5" stroke="#E05A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-
-      </div>
-    </div>
-  </section>
 
 
   <!-- ============================================================
@@ -1132,7 +1232,7 @@
   <!-- ============================================================
        WHY IDE SYSTEMS — TRUST SIGNALS
   ============================================================ -->
-  <section id="why-ide" style="background: #FFFFFF; padding: 120px 32px 60px;">
+  <section id="why-ide" style="background: #FFFFFF; padding: 120px 32px;">
     <div style="max-width: 1180px; margin: 0 auto;">
       <div class="grid-2col-start">
 
@@ -1154,14 +1254,6 @@
 
         <div class="fade-up delay-2">
           <div>
-
-            <div style="padding: 28px 0; border-top: 1px solid #D6D0C8; display: flex; gap: 20px; align-items: flex-start;">
-              <div class="trust-dot"></div>
-              <div>
-                <div class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="ide-t1-title">40+ years of SA banking experience</div>
-                <div style="font-size: 15px; color: #6B7280; line-height: 1.65;" data-i18n="ide-t1-body">Including implementation work at major South African commercial banks. That track record doesn't come from a brochure.</div>
-              </div>
-            </div>
 
             <div style="padding: 28px 0; border-top: 1px solid #D6D0C8; display: flex; gap: 20px; align-items: flex-start;">
               <div class="trust-dot"></div>
@@ -1203,65 +1295,6 @@
   </section>
 
 
-  <!-- ============================================================
-       COMPLIANCE AND SECURITY
-  ============================================================ -->
-  <section id="compliance" style="background: #FFFFFF; padding: 60px 32px 120px;">
-    <div style="max-width: 1180px; margin: 0 auto;">
-
-      <div style="max-width: 640px; margin-bottom: 72px;">
-        <span class="section-label fade-up" data-i18n="comp-label">Compliance and Security</span>
-        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="comp-h2">
-          Compliance isn't a feature.<br>It's the foundation.
-        </h2>
-        <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;" data-i18n="comp-copy">
-          Registered CFIs operate in a heavily supervised environment. Paxiss was designed with that reality at its core, not adapted to it after the fact.
-        </p>
-      </div>
-
-      <div class="grid-2col-start" style="margin-bottom: 64px; gap: 24px;">
-
-        <div class="fade-up" style="background: #F5F4F1; border-radius: 3px; padding: 40px;">
-          <div class="rule-orange" style="margin-bottom: 24px;"></div>
-          <h3 class="font-display" style="font-size: 21px; font-weight: 700; margin-bottom: 16px; color: #0B2048;" data-i18n="comp-sarb-h3">SARB Prudential Authority</h3>
-          <p style="font-size: 16px; color: #6B7280; line-height: 1.75; margin-bottom: 16px;" data-i18n="comp-sarb-p1">Paxiss is built to the reporting and operational standards required by the Prudential Authority for registered CFIs. Quarterly returns, compliance submissions, and capital adequacy tracking are all supported.</p>
-          <p style="font-size: 15px; color: #4B5563; line-height: 1.7;" data-i18n="comp-sarb-p2">The system generates reports in the formats the PA expects, reducing the manual reformatting that creates errors.</p>
-        </div>
-
-        <div class="fade-up delay-1" style="background: #F5F4F1; border-radius: 3px; padding: 40px;">
-          <div class="rule-orange" style="margin-bottom: 24px;"></div>
-          <h3 class="font-display" style="font-size: 21px; font-weight: 700; margin-bottom: 16px; color: #0B2048;" data-i18n="comp-fica-h3">FICA and POPIA</h3>
-          <p style="font-size: 16px; color: #6B7280; line-height: 1.75; margin-bottom: 16px;" data-i18n="comp-fica-p1">Customer due diligence, identity verification, and KYC record management are integrated into member onboarding and ongoing transaction workflows. Not managed separately.</p>
-          <p style="font-size: 15px; color: #4B5563; line-height: 1.7;" data-i18n="comp-fica-p2">Data handling within Paxiss is designed to meet POPIA requirements. Member data stays where it belongs.</p>
-        </div>
-
-        <div class="fade-up" style="background: #F5F4F1; border-radius: 3px; padding: 40px;">
-          <div class="rule-orange" style="margin-bottom: 24px;"></div>
-          <h3 class="font-display" style="font-size: 21px; font-weight: 700; margin-bottom: 16px; color: #0B2048;" data-i18n="comp-codi-h3">CODI Reporting</h3>
-          <p style="font-size: 16px; color: #6B7280; line-height: 1.75; margin-bottom: 16px;" data-i18n="comp-codi-p1">Co-operative Banks Development Agency reporting requirements are automated within the general ledger module. Month-end and year-end reporting becomes a process, not a crisis.</p>
-          <p style="font-size: 15px; color: #4B5563; line-height: 1.7;" data-i18n="comp-codi-p2">Paxiss generates CODI-compliant financial statements directly from live data.</p>
-        </div>
-
-        <div class="fade-up delay-1" style="background: #F5F4F1; border-radius: 3px; padding: 40px;">
-          <div class="rule-orange" style="margin-bottom: 24px;"></div>
-          <h3 class="font-display" style="font-size: 21px; font-weight: 700; margin-bottom: 16px; color: #0B2048;" data-i18n="comp-audit-h3">Audit Trails and Forensics</h3>
-          <p style="font-size: 16px; color: #6B7280; line-height: 1.75; margin-bottom: 16px;" data-i18n="comp-audit-p1">Every transaction, user action, and system event is logged immutably. If something ever requires investigation, the record is there. This protects your institution and your members.</p>
-          <p style="font-size: 15px; color: #4B5563; line-height: 1.7;" data-i18n="comp-audit-p2">Role-based access control ensures no user has access beyond what their mandate specifies.</p>
-        </div>
-
-      </div>
-
-      <div class="fade-up" style="display: flex; flex-wrap: wrap; gap: 10px;">
-        <div class="compliance-badge" data-i18n="comp-badge1">Cooperative Banks Act No. 40 of 2007</div>
-        <div class="compliance-badge" data-i18n="comp-badge2">SARB Prudential Authority</div>
-        <div class="compliance-badge" data-i18n="comp-badge3">FICA Compliant</div>
-        <div class="compliance-badge" data-i18n="comp-badge4">CODI Aligned</div>
-        <div class="compliance-badge" data-i18n="comp-badge5">POPIA Aligned</div>
-        <div class="compliance-badge" data-i18n="comp-badge6">Full Audit Trail</div>
-      </div>
-
-    </div>
-  </section>
 
 
   <!-- ============================================================
@@ -1273,7 +1306,7 @@
       <div style="max-width: 640px; margin-bottom: 72px;">
         <span class="section-label fade-up" data-i18n="dep-label">Deployment Options</span>
         <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="dep-h2">
-          Your institution. <br>Your infrastructure decision.
+          Your infrastructure decision.
         </h2>
         <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;" data-i18n="dep-copy">
           Paxiss is the same platform whether you run it in the cloud or on your own servers. The deployment model doesn't change what the software does.
@@ -1345,99 +1378,8 @@
   </section>
 
 
-  <!-- ============================================================
-       SOCIAL PROOF / TRACK RECORD
-  ============================================================ -->
-  <section id="social-proof" class="section-dark" style="padding: 120px 32px;">
-    <div style="max-width: 1180px; margin: 0 auto;">
-
-      <div style="max-width: 640px; margin-bottom: 72px;">
-        <span class="section-label fade-up" style="color: #E05A1E;" data-i18n="proof-label">Track Record</span>
-        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; background: linear-gradient(135deg, #FFB26A, #E05A1E); -webkit-background-clip: text; color: transparent;" data-i18n="proof-h2">
-          The work speaks.<br>The experience is real.
-        </h2>
-        <p class="fade-up delay-2" style="font-size: 17px; line-height: 1.7; color: rgba(245,247,255,0.86);" data-i18n="proof-copy">
-          Client testimonials from institutions currently using Paxiss are being gathered and will appear here. What we can tell you is where the expertise behind the platform came from.
-        </p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-
-        <div class="testimonial-card glass-card fade-up">
-          <span class="quote-mark">"</span>
-          <p style="font-size: 17px; line-height: 1.8; margin-bottom: 24px; font-style: italic; color: rgba(245,247,255,0.9);" data-i18n="proof-quote1">
-            Our team has been involved in product, software, and systems development in South Africa for more than 40 years, including extensive experience developing and implementing systems in major banks.
-          </p>
-          <div style="font-size: 12px; color: rgba(245,247,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;" data-i18n="proof-source1">IDE Systems, Product Overview</div>
-        </div>
-
-        <div class="testimonial-card glass-card fade-up delay-1">
-          <span class="quote-mark">"</span>
-          <p style="font-size: 17px; line-height: 1.8; margin-bottom: 24px; font-style: italic; color: rgba(245,247,255,0.9);" data-i18n="proof-quote2">
-            Speak to a reference client directly. We can connect you with cooperative institutions currently running on Paxiss. Ask us anything about the system, the support, and the implementation experience.
-          </p>
-          <a href="#consultation" style="display: inline-block; margin-top: 4px; font-size: 14px; font-weight: 600; color: #E05A1E; text-decoration: none; border-bottom: 1px solid #E05A1E; padding-bottom: 2px; min-height: 44px; line-height: 44px;" data-i18n="proof-ref-link">Request a reference client introduction</a>
-        </div>
-
-        <div class="testimonial-card glass-card fade-up delay-2">
-          <div style="margin-bottom: 20px;">
-            <div class="font-display" style="font-size: 48px; font-weight: 800; color: #E05A1E; line-height: 1;">30</div>
-            <div style="font-size: 14px; color: rgba(245,247,255,0.92); font-weight: 600; margin-top: 6px;" data-i18n="proof-stat-label">Registered cooperative financial institutions in South Africa</div>
-          </div>
-          <p style="font-size: 15px; line-height: 1.7; margin-bottom: 20px; color: rgba(245,247,255,0.86);" data-i18n="proof-stat-body">Holding over R656 million in member deposits and R594 million in member savings. A small sector by count, and one that carries enormous community responsibility.</p>
-          <div style="border-top: 1px solid rgba(255,255,255,0.12); padding-top: 16px; font-size: 12px; color: rgba(245,247,255,0.48);" data-i18n="proof-stat-source">Source: SARB Prudential Authority Annual Report, 2024</div>
-        </div>
-
-      </div>
-    </div>
-  </section>
 
 
-  <!-- ============================================================
-       EMAIL CAPTURE — FREE CHECKLIST
-  ============================================================ -->
-  <section id="download" style="background: linear-gradient(135deg, #08122f 0%, #1c3e83 45%, #E05A1E 100%); padding: 100px 32px;">
-    <div style="max-width: 1180px; margin: 0 auto;">
-      <div class="grid-2col">
-
-        <div>
-          <span class="section-label fade-up" style="color: rgba(255,255,255,0.75);" data-i18n="dl-label">Free Resource</span>
-          <h2 class="font-display fade-up delay-1" style="font-size: clamp(26px, 3.5vw, 42px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin: 20px 0 20px; color: #FFFFFF;" data-i18n="dl-h2">
-            The CFI Compliance Checklist
-          </h2>
-          <p class="fade-up delay-2" style="color: rgba(255,255,255,0.82); font-size: 17px; line-height: 1.8; margin-bottom: 16px;" data-i18n="dl-p1">
-            What your banking system must do under the Cooperative Banks Act. A practical reference for CFI administrators and cooperative bank executives.
-          </p>
-          <p class="fade-up delay-2" style="color: rgba(255,255,255,0.72); font-size: 15px; line-height: 1.7;" data-i18n="dl-p2">
-            Covers Prudential Authority requirements, FICA obligations, CODI reporting, member data management, and governance infrastructure. Written in plain language, not legal code.
-          </p>
-        </div>
-
-        <div class="fade-up delay-2">
-          <div style="background: rgba(255,255,255,0.96); border-radius: 28px; padding: 44px 40px; border: none; box-shadow: 0 32px 80px rgba(0,0,0,0.18); max-width: 480px; color: #1A1A1A;">
-            <!-- TODO: Replace form action with your Mailchimp / Brevo / Formspree endpoint -->
-            <form id="download-form" onsubmit="handleFormSubmit(event)" novalidate>
-              <div style="margin-bottom: 16px;">
-                <label for="first-name" style="display: block; font-size: 13px; font-weight: 600; color: #1A1A1A; margin-bottom: 8px; letter-spacing: 0.04em;" data-i18n="dl-fname-label">First Name</label>
-                <input type="text" id="first-name" name="first_name" placeholder="Your first name" class="form-input" required autocomplete="given-name" data-i18n-ph="dl-fname-ph" />
-              </div>
-              <div style="margin-bottom: 28px;">
-                <label for="email-addr" style="display: block; font-size: 13px; font-weight: 600; color: #1A1A1A; margin-bottom: 8px; letter-spacing: 0.04em;" data-i18n="dl-email-label">Email Address</label>
-                <input type="email" id="email-addr" name="email" placeholder="your@institution.co.za" class="form-input" required autocomplete="email" />
-              </div>
-              <button type="submit" class="btn-primary" style="width: 100%; text-align: center; padding: 16px 32px; font-size: 16px;" data-i18n="dl-submit">Send Me the Checklist</button>
-              <p style="margin-top: 16px; font-size: 12px; color: #9CA3AF; line-height: 1.5; text-align: center;" data-i18n="dl-privacy">We respect your privacy. No spam, ever. Unsubscribe anytime.</p>
-            </form>
-            <div id="form-success" style="display: none; text-align: center; padding: 24px 0;">
-              <div class="font-display" style="font-size: 22px; font-weight: 700; color: #1A1A1A; margin-bottom: 12px;" data-i18n="dl-success-h">On its way.</div>
-              <p style="font-size: 15px; color: #6B7280; line-height: 1.65;" data-i18n="dl-success-p">Check your inbox. If it doesn't arrive within a few minutes, check your spam folder.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
 
 
   <!-- ============================================================
@@ -1595,9 +1537,10 @@
       <div class="footer-grid" style="margin-bottom: 64px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.08);">
 
         <div>
-          <div style="margin-bottom: 20px;">
-            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; display: block; line-height: 1.1;">Paxiss</span>
-            <span style="font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.35); letter-spacing: 0.14em; text-transform: uppercase;">by IDE Systems</span>
+          <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 14px;">
+            <img src="PAXISS-logo-white.png" alt="Paxiss" style="height: 28px; width: auto;">
+            <span style="width: 1px; height: 20px; background: rgba(255,255,255,0.2);"></span>
+            <img src="IDE-Systems-Logo-White.png" alt="IDE Systems" style="height: 32px; width: auto;">
           </div>
           <p style="font-size: 15px; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 340px; margin-bottom: 24px;">
             Purpose-built core banking software for South African cooperative financial institutions. Locally developed, locally supported, regulatory-grade.
@@ -1613,7 +1556,6 @@
           <div style="font-size: 11px; font-weight: 600; color: #E05A1E; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px;">Platform</div>
           <div style="display: flex; flex-direction: column; gap: 14px;">
             <a href="#features">Core Banking Features</a>
-            <a href="#compliance">Compliance and Security</a>
             <a href="#deployment">Deployment Options</a>
             <a href="#who-its-for">Who Paxiss Is For</a>
             <a href="#faq">FAQ</a>
@@ -1662,7 +1604,7 @@
         'nav-cta': 'Book Free Consultation',
         'hero-label': 'Core Banking Software for South African CFIs',
         'hero-h1': 'Banking software built for the institutions that put people first.',
-        'hero-copy': 'Paxiss is purpose-built core banking for South African cooperative financial institutions. SARB compliant, fully customisable, locally supported. From a Pretoria team with 40 years inside South African banking.',
+        'hero-copy': 'Paxiss is purpose-built core banking for South African cooperative financial institutions. Fully customisable, locally supported. From a Pretoria team with 40 years experience in banking.',
         'hero-cta-primary': 'Book Your Free Consultation', 'hero-cta-secondary': 'See How Paxiss Works',
         'stat-years': 'years in the banking systems environment', 'stat-free': 'Free',
         'stat-languages': 'Languages: English<br>and Afrikaans', 'stat-consult': 'Initial consultation,<br>every time',
@@ -1770,7 +1712,7 @@
         'comp-audit-p2': 'Role-based access control ensures no user has access beyond what their mandate specifies.',
         'comp-badge1': 'Cooperative Banks Act No. 40 of 2007', 'comp-badge2': 'SARB Prudential Authority',
         'comp-badge3': 'FICA Compliant', 'comp-badge4': 'CODI Aligned', 'comp-badge5': 'POPIA Aligned', 'comp-badge6': 'Full Audit Trail',
-        'dep-label': 'Deployment Options', 'dep-h2': 'Your institution.<br>Your infrastructure decision.',
+        'dep-label': 'Deployment Options', 'dep-h2': 'Your infrastructure decision.',
         'dep-copy': "Paxiss is the same platform whether you run it in the cloud or on your own servers. The deployment model doesn't change what the software does.",
         'dep-saas-label': 'SaaS', 'dep-saas-h3': 'Managed Cloud Hosting',
         'dep-saas-p': 'We handle the infrastructure, updates, backups, and uptime monitoring. Your team logs in and works. No server costs, no IT overhead, no maintenance window surprises.',
@@ -1806,7 +1748,7 @@
         'nav-cta': 'Bespreek Gratis Konsultasie',
         'hero-label': "Kern Bank sagteware vir Suid-Afrikaanse KFI's",
         'hero-h1': 'Kern Bank sagteware ontwerp vir instellings wat mense eerste stel.',
-        'hero-copy': "Paxiss is Kern Bank sagteware vir Suid-Afrikaanse koöperatiewe finansële instellings. SARB-voldoende, volledig aanpasbaar, plaaslik ondersteun. Van 'n' span met 40 jaar ervaring binne die Suid-Afrikaanse bankwese.",
+        'hero-copy': "Paxiss is doelgeboude kernbanksagteware vir Suid-Afrikaanse koöperatiewe finansiële instellings. Volledig aanpasbaar, plaaslik ondersteun. Van 'n Pretoriase span met 40 jaar ervaring in bankwese.",
         'hero-cta-primary': 'Bespreek u Gratis Konsultasie', 'hero-cta-secondary': 'Sien Hoe Paxiss Werk',
         'stat-years': 'jaar in die bankstelselomgewing', 'stat-free': 'Gratis',
         'stat-languages': 'Tale: Engels<br>en Afrikaans', 'stat-consult': 'Aanvanklike konsultasie,<br>elke keer',
@@ -1914,7 +1856,7 @@
         'comp-audit-p2': 'Rolgebaseerde toegangsbeheer verseker dat geen gebruiker toegang het buite wat hul mandaat spesifiseer nie.',
         'comp-badge1': 'Wet op Koöperatiewe Banke Nr. 40 van 2007', 'comp-badge2': 'SARB Prudensiele Owerheid',
         'comp-badge3': 'FICA-voldoend', 'comp-badge4': 'CODI-belyn', 'comp-badge5': 'POPIA-belyn', 'comp-badge6': 'Volledige Ouditspoort',
-        'dep-label': 'Ontplooiingsopsies', 'dep-h2': 'U instelling.<br>U infrastruktuurkeuse.',
+        'dep-label': 'Ontplooiingsopsies', 'dep-h2': 'U infrastruktuurkeuse.',
         'dep-copy': "Paxiss is dieselfde platform of u dit in die wolk of op u eie bedieners laat loop. Die ontplooiingsmodel verander nie wat die sagteware doen nie.",
         'dep-saas-label': 'SaaS', 'dep-saas-h3': 'Bestuurde Wolkgastouing',
         'dep-saas-p': "Ons hanteer die infrastruktuur, opdaterings, rugsteun en stilstandtyd-monitering. U span meld aan en werk. Geen bedienerkoste, geen IT-oorhoofse, geen instandhoudingsvenstervrassings nie.",
@@ -2071,6 +2013,25 @@
       try { saved = localStorage.getItem('paxiss-lang') || 'en'; } catch(e) {}
       if (saved !== 'en') applyLang(saved);
     })();
+
+    // Feature accordion
+    function toggleFeatureAcc(btn) {
+      var accordion = btn.closest('.feat-accordion');
+      var panel = accordion.querySelector('.feat-acc-panel');
+      var isOpen = accordion.classList.contains('acc-open');
+
+      document.querySelectorAll('.feat-accordion').forEach(function(a) {
+        a.classList.remove('acc-open');
+        a.querySelector('.feat-acc-panel').style.maxHeight = null;
+        a.querySelector('.feat-acc-trigger').setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        accordion.classList.add('acc-open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
 
     // Email capture form
     function handleFormSubmit(e) {
