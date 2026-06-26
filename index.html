@@ -719,30 +719,80 @@
     .lang-toggle {
       display: inline-flex;
       background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.22);
       border-radius: 999px;
-      padding: 3px;
-      gap: 2px;
+      padding: 4px;
+      gap: 3px;
       flex-shrink: 0;
     }
     .lang-btn {
       font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.55);
       background: none;
       border: none;
       cursor: pointer;
-      padding: 5px 11px;
+      padding: 8px 16px;
       border-radius: 999px;
       transition: background 0.2s ease, color 0.2s ease;
       line-height: 1;
-      min-height: 28px;
+      min-height: 36px;
     }
     .lang-btn.active { background: var(--orange); color: #FFFFFF; }
     .lang-btn:hover:not(.active) { color: rgba(255,255,255,0.9); }
     .mobile-lang-toggle { margin-top: 24px; align-self: flex-start; }
+
+    /* Language popup */
+    .lang-popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 5, 18, 0.75);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .lang-popup-overlay.visible { opacity: 1; visibility: visible; }
+    .lang-popup {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 56px 48px;
+      max-width: 440px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.3);
+      transform: translateY(16px);
+      transition: transform 0.35s ease;
+    }
+    .lang-popup-overlay.visible .lang-popup { transform: translateY(0); }
+    .lang-popup h2 { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 800; color: #0B2048; margin: 0 0 12px; }
+    .lang-popup p { font-size: 16px; color: #6B7280; margin: 0 0 36px; line-height: 1.6; }
+    .lang-popup-btns { display: flex; flex-direction: column; gap: 12px; }
+    .lang-popup-btn {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 999px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      border: none;
+      min-height: 52px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .lang-popup-btn:hover { transform: translateY(-1px); }
+    .lang-popup-btn--primary { background: linear-gradient(135deg, #E05A1E, #FF8E45); color: #FFFFFF; box-shadow: 0 12px 32px rgba(224,90,30,0.22); }
+    .lang-popup-btn--secondary { background: #F5F4F1; color: #0B2048; border: 1.5px solid rgba(26,26,26,0.08); }
 
     /* Capabilities table */
     .cap-table { border: 1px solid rgba(214,208,200,0.8); border-radius: 16px; overflow: hidden; }
@@ -821,6 +871,18 @@
     </filter>
   </svg>
 
+  <!-- Language selection popup (first visit) -->
+  <div id="lang-popup" class="lang-popup-overlay" role="dialog" aria-label="Choose language">
+    <div class="lang-popup">
+      <h2 data-i18n="lang-popup-h2">Choose your language</h2>
+      <p data-i18n="lang-popup-p">This site is available in English and Afrikaans.</p>
+      <div class="lang-popup-btns">
+        <button type="button" class="lang-popup-btn lang-popup-btn--primary" onclick="chooseLang('en')">Continue in English</button>
+        <button type="button" class="lang-popup-btn lang-popup-btn--secondary" onclick="chooseLang('af')">Gaan voort in Afrikaans</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============================================================
        NAVIGATION
   ============================================================ -->
@@ -841,8 +903,8 @@
       </div>
 
       <div class="lang-toggle" role="group" aria-label="Select language" style="margin-left: 8px;">
-        <button type="button" class="lang-btn active" data-lang="en" onclick="applyLang('en')" aria-pressed="true">EN</button>
-        <button type="button" class="lang-btn" data-lang="af" onclick="applyLang('af')" aria-pressed="false">AF</button>
+        <button type="button" class="lang-btn active" data-lang="en" onclick="applyLang('en')" aria-pressed="true">ENG</button>
+        <button type="button" class="lang-btn" data-lang="af" onclick="applyLang('af')" aria-pressed="false">AFR</button>
       </div>
 
       <button class="nav-menu-btn" id="menu-toggle" aria-label="Open navigation menu">
@@ -866,8 +928,8 @@
     <a href="#faq" data-i18n="nav-faq">FAQ</a>
     <a href="#consultation" data-i18n="nav-cta">Book Free Consultation</a>
     <div class="lang-toggle mobile-lang-toggle" role="group" aria-label="Select language">
-      <button type="button" class="lang-btn active" data-lang="en" onclick="applyLang('en'); closeMenu();" aria-pressed="true">EN</button>
-      <button type="button" class="lang-btn" data-lang="af" onclick="applyLang('af'); closeMenu();" aria-pressed="false">AF</button>
+      <button type="button" class="lang-btn active" data-lang="en" onclick="applyLang('en'); closeMenu();" aria-pressed="true">ENG</button>
+      <button type="button" class="lang-btn" data-lang="af" onclick="applyLang('af'); closeMenu();" aria-pressed="false">AFR</button>
     </div>
   </div>
 
@@ -914,11 +976,11 @@
     <div style="max-width: 1180px; margin: 0 auto;">
 
       <div style="max-width: 640px; margin-bottom: 88px;">
-        <span class="section-label fade-up">Paxiss Feature Catalogue</span>
-        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;">
+        <span class="section-label fade-up" data-i18n="feat-label">Paxiss Feature Catalogue</span>
+        <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 24px; color: #0B2048;" data-i18n="feat-h2">
           Everything a CFI needs. <br>Nothing it doesn't.
         </h2>
-        <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;">
+        <p class="fade-up delay-2" style="color: #6B7280; font-size: 17px; line-height: 1.7;" data-i18n="feat-copy">
           Paxiss covers the full operational surface of a regulated cooperative financial institution, built so your team can run confidently from day one.
         </p>
       </div>
@@ -928,30 +990,30 @@
         <!-- Core Banking Operations -->
         <div class="feat-accordion" style="border-top: 2px solid #E05A1E;">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Core Banking Operations</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g1">Core Banking Operations</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Client Profile Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Capture and maintain comprehensive client profile information, including personal details, contact information, identification records, account relationships, and regulatory data.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cb-1-title">Client Profile Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cb-1-body">Capture and maintain comprehensive client profile information, including personal details, contact information, identification records, account relationships, and regulatory data.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Account Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Open, maintain, and manage accounts for all product types offered by the institution. Account functionality is driven by product definitions and client eligibility criteria.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cb-2-title">Account Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cb-2-body">Open, maintain, and manage accounts for all product types offered by the institution. Account functionality is driven by product definitions and client eligibility criteria.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Transaction Processing Engine</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">A comprehensive engine supporting deposits, withdrawals, transfers, payments, and fund transfers to external institutions. Also supports sundry transactions between general ledger accounts, as well as suspended, deferred, and automated transactions.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cb-3-title">Transaction Processing Engine</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cb-3-body">A comprehensive engine supporting deposits, withdrawals, transfers, payments, and fund transfers to external institutions. Also supports sundry transactions between general ledger accounts, as well as suspended, deferred, and automated transactions.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Standing Instructions</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Automate recurring client transactions based on predefined schedules. Instructions can continue indefinitely or terminate automatically when specified end criteria are met.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cb-4-title">Standing Instructions</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cb-4-body">Automate recurring client transactions based on predefined schedules. Instructions can continue indefinitely or terminate automatically when specified end criteria are met.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Cash Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Manage and control cash holdings issued to officials from the treasury. Tracks cash balances by denomination, records all movements, and supports end-of-day balancing and reconciliation. Multiple teller positions with full support for cash transfers between tellers and the treasury.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cb-5-title">Cash Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cb-5-body">Manage and control cash holdings issued to officials from the treasury. Tracks cash balances by denomination, records all movements, and supports end-of-day balancing and reconciliation. Multiple teller positions with full support for cash transfers between tellers and the treasury.</p>
               </div>
             </div>
           </div>
@@ -960,22 +1022,22 @@
         <!-- Product & Pricing Management -->
         <div class="feat-accordion">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Product and Pricing Management</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g2">Product and Pricing Management</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Product Definition Engine</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">A flexible, user-definable product configuration facility that enables the institution to create and maintain unique financial products across various product classes, including savings, loans, investments, and transactional accounts.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-pp-1-title">Product Definition Engine</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-pp-1-body">A flexible, user-definable product configuration facility that enables the institution to create and maintain unique financial products across various product classes, including savings, loans, investments, and transactional accounts.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Interest Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Interest structures are dynamically configurable on a per-product basis. Define and maintain interest calculation methods, rates, and related parameters for each product, allowing the system to automatically calculate and apply interest according to product-specific rules.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-pp-2-title">Interest Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-pp-2-body">Interest structures are dynamically configurable on a per-product basis. Define and maintain interest calculation methods, rates, and related parameters for each product, allowing the system to automatically calculate and apply interest according to product-specific rules.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Fee Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Fees are fully user-definable, allowing authorised officials to configure fee structures and the rules governing their application. The system automatically calculates and applies the appropriate fees to transactions.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-pp-3-title">Fee Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-pp-3-body">Fees are fully user-definable, allowing authorised officials to configure fee structures and the rules governing their application. The system automatically calculates and applies the appropriate fees to transactions.</p>
               </div>
             </div>
           </div>
@@ -984,18 +1046,18 @@
         <!-- Financial Management -->
         <div class="feat-accordion">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Financial Management</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g3">Financial Management</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">General Ledger Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">A fully integrated general ledger facility automatically records all accounting entries arising from transactions, ensuring complete financial integrity and real-time financial reporting.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-fm-1-title">General Ledger Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-fm-1-body">A fully integrated general ledger facility automatically records all accounting entries arising from transactions, ensuring complete financial integrity and real-time financial reporting.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Sundry Transactions</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Authorised and mandated officials can perform controlled financial transactions directly between general ledger accounts, supporting operational and administrative financial activities.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-fm-2-title">Sundry Transactions</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-fm-2-body">Authorised and mandated officials can perform controlled financial transactions directly between general ledger accounts, supporting operational and administrative financial activities.</p>
               </div>
             </div>
           </div>
@@ -1004,22 +1066,22 @@
         <!-- Shareholding & Relationship Management -->
         <div class="feat-accordion">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Shareholding and Relationship Management</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g4">Shareholding and Relationship Management</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Shareholding Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Manage member shareholdings, including the issuance, maintenance, transfer, and redemption of shares. The system also supports the printing and management of share certificates.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sr-1-title">Shareholding Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sr-1-body">Manage member shareholdings, including the issuance, maintenance, transfer, and redemption of shares. The system also supports the printing and management of share certificates.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Relationship Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Capture and maintain relationships between clients, accounts, and related parties, such as representatives, signatories, trustees, beneficiaries, and guardians. All compliance requirements applicable to clients are automatically enforced for related parties.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sr-2-title">Relationship Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sr-2-body">Capture and maintain relationships between clients, accounts, and related parties, such as representatives, signatories, trustees, beneficiaries, and guardians. All compliance requirements applicable to clients are automatically enforced for related parties.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Pledge Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Manage and track pledged (ceded) accounts, including the registration, maintenance, and monitoring of third-party cessions and associated account restrictions.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sr-3-title">Pledge Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sr-3-body">Manage and track pledged (ceded) accounts, including the registration, maintenance, and monitoring of third-party cessions and associated account restrictions.</p>
               </div>
             </div>
           </div>
@@ -1028,22 +1090,22 @@
         <!-- Compliance & Regulatory Management -->
         <div class="feat-accordion">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Compliance and Regulatory Management</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g5">Compliance and Regulatory Management</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">FICA Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Comprehensive FICA management for all profiles, including clients and related parties. FICA-related documentation is stored electronically within the system for compliance, verification, and audit purposes.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cr-1-title">FICA Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cr-1-body">Comprehensive FICA management for all profiles, including clients and related parties. FICA-related documentation is stored electronically within the system for compliance, verification, and audit purposes.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">CODI Compliance</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Supports all data capture, validation, reporting, and submission requirements necessary to comply with the South African Corporation for Deposit Insurance (CODI) regulations.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cr-2-title">CODI Compliance</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cr-2-body">Supports all data capture, validation, reporting, and submission requirements necessary to comply with the South African Corporation for Deposit Insurance (CODI) regulations.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Regulatory Data Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Ensures the capture and maintenance of all information required to meet regulatory, governance, and compliance obligations.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-cr-3-title">Regulatory Data Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-cr-3-body">Ensures the capture and maintenance of all information required to meet regulatory, governance, and compliance obligations.</p>
               </div>
             </div>
           </div>
@@ -1052,18 +1114,18 @@
         <!-- Document & Records Management -->
         <div class="feat-accordion">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Document and Records Management</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g6">Document and Records Management</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Document Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Integrated document management for storing and managing client-related documents, including contracts, wills, trust deeds, identification documents, share certificates, and other supporting records directly within the system.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-dr-1-title">Document Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-dr-1-body">Integrated document management for storing and managing client-related documents, including contracts, wills, trust deeds, identification documents, share certificates, and other supporting records directly within the system.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Electronic Record Retention</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Secure storage and retrieval of supporting documentation and historical records, providing a complete audit trail for regulatory and operational purposes.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-dr-2-title">Electronic Record Retention</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-dr-2-body">Secure storage and retrieval of supporting documentation and historical records, providing a complete audit trail for regulatory and operational purposes.</p>
               </div>
             </div>
           </div>
@@ -1072,26 +1134,26 @@
         <!-- Security, Control & Audit -->
         <div class="feat-accordion">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Security, Control and Audit</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g7">Security, Control and Audit</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Security and Access Control</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Role-based security enables administrators to control access to functions, data, and transactions based on user roles and responsibilities.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sc-1-title">Security and Access Control</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sc-1-body">Role-based security enables administrators to control access to functions, data, and transactions based on user roles and responsibilities.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Mandate Management</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Allows authorised officials to temporarily delegate specific rights and responsibilities to other officials under controlled and auditable conditions.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sc-2-title">Mandate Management</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sc-2-body">Allows authorised officials to temporarily delegate specific rights and responsibilities to other officials under controlled and auditable conditions.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Audit and Forensic Tracking</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Comprehensive audit and forensic tracking records all user activities, transactions, approvals, amendments, and system access. The system maintains a complete audit trail showing who performed each action, when it was performed, and from which workstation or facility.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sc-3-title">Audit and Forensic Tracking</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sc-3-body">Comprehensive audit and forensic tracking records all user activities, transactions, approvals, amendments, and system access. The system maintains a complete audit trail showing who performed each action, when it was performed, and from which workstation or facility.</p>
               </div>
               <div class="feat-acc-item">
-                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;">Operational Monitoring</h3>
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Provides visibility into user activity, system usage, transaction history, and operational events to support governance, oversight, and risk management.</p>
+                <h3 class="font-display" style="font-size: 16px; font-weight: 700; color: #0B2048; margin-bottom: 6px;" data-i18n="feat-sc-4-title">Operational Monitoring</h3>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-sc-4-body">Provides visibility into user activity, system usage, transaction history, and operational events to support governance, oversight, and risk management.</p>
               </div>
             </div>
           </div>
@@ -1100,13 +1162,13 @@
         <!-- Multi-Language Support -->
         <div class="feat-accordion" style="border-bottom: 1px solid #D6D0C8;">
           <button class="feat-acc-trigger" onclick="toggleFeatureAcc(this)" aria-expanded="false">
-            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;">Multi-Language Support</span>
+            <span class="font-display" style="font-size: 17px; font-weight: 700; color: #0B2048;" data-i18n="feat-g8">Multi-Language Support</span>
             <svg class="feat-acc-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="#E05A1E" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <div class="feat-acc-panel">
             <div class="feat-acc-inner">
               <div class="feat-acc-item">
-                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;">Dynamically switch the system between English and Afrikaans, with all screens, menus, messages, and reports displayed in the selected language.</p>
+                <p style="font-size: 15px; color: #6B7280; line-height: 1.7; margin: 0;" data-i18n="feat-ml-1-body">Dynamically switch the system between English and Afrikaans, with all screens, menus, messages, and reports displayed in the selected language.</p>
               </div>
             </div>
           </div>
@@ -1116,51 +1178,51 @@
 
       <!-- Key System Benefits -->
       <div class="fade-up" style="margin-top: 72px; max-width: 920px;">
-        <h3 class="font-display" style="font-size: 21px; font-weight: 700; color: #0B2048; margin-bottom: 28px;">Key System Benefits</h3>
+        <h3 class="font-display" style="font-size: 21px; font-weight: 700; color: #0B2048; margin-bottom: 28px;" data-i18n="feat-benefits-title">Key System Benefits</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px 40px;">
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Comprehensive end-to-end banking solution</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-1">Comprehensive end-to-end banking solution</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Fully integrated accounting and general ledger</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-2">Fully integrated accounting and general ledger</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">User-definable products, fees, and interest structures</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-3">User-definable products, fees, and interest structures</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Built-in FICA and CODI compliance</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-4">Built-in FICA and CODI compliance</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Complete audit and forensic tracking</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-5">Complete audit and forensic tracking</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Integrated document management</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-6">Integrated document management</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Multi-teller cash management</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-7">Multi-teller cash management</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Flexible relationship and shareholding management</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-8">Flexible relationship and shareholding management</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Automated recurring transactions</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-9">Automated recurring transactions</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Secure, role-based access control</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-10">Secure, role-based access control</span>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start; padding: 8px 0;">
             <span style="color: #E05A1E; font-weight: 800; flex-shrink: 0; margin-top: 1px;">+</span>
-            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;">Real-time transaction processing and financial posting</span>
+            <span style="font-size: 15px; color: #4B5563; line-height: 1.6;" data-i18n="feat-ben-11">Real-time transaction processing and financial posting</span>
           </div>
         </div>
       </div>
@@ -1239,13 +1301,13 @@
         <div>
           <span class="section-label fade-up" data-i18n="ide-label">Why IDE Systems</span>
           <h2 class="font-display fade-up delay-1" style="font-size: clamp(30px, 4vw, 50px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 20px 0 28px; color: #0B2048;" data-i18n="ide-h2">
-            Forty years inside South African banking. One product built from that knowledge.
+            40 years of banking experience. One product built from that knowledge.
           </h2>
           <p class="fade-up delay-2" style="color: #4B5563; font-size: 17px; line-height: 1.8; margin-bottom: 20px;" data-i18n="ide-p1">
-            IDE Systems has been developing banking systems in South Africa since before most of its clients' institutions existed. That includes major commercial bank implementations, the kind of projects that teach you what robustness actually means.
+            The team behind IDE Systems brings 40 years of combined experience in South African banking. That includes building and implementing systems at major commercial banks, the kind of work that teaches you what reliability and compliance actually look like at scale.
           </p>
           <p class="fade-up delay-2" style="color: #4B5563; font-size: 17px; line-height: 1.8; margin-bottom: 20px;" data-i18n="ide-p2">
-            Paxiss emerged from a specific recognition: the cooperative banking sector was being served poorly by everyone. So we built something purpose-made. Not adapted. Not reskinned. Built from the ground up for the regulatory and community realities of South African CFIs.
+            When they saw cooperative financial institutions struggling with software that was never designed for them, they built Paxiss from the ground up. Not adapted from a commercial platform. Not reskinned from a foreign product. Purpose-made for the regulatory and community realities of South African CFIs.
           </p>
           <p class="fade-up delay-3" style="color: #1A1A1A; font-size: 17px; line-height: 1.8; font-weight: 500;" data-i18n="ide-p3">
             We are a Pretoria team. We understand the Cooperative Banks Act the way accountants understand the Tax Act: not as a checklist, but as a reality we work inside every day.
@@ -1597,301 +1659,9 @@
     // ============================================================
     // TRANSLATIONS
     // ============================================================
-    var i18n = {
-      en: {
-        'nav-solutions': 'Solutions', 'nav-capabilities': 'Capabilities', 'nav-who': "Who It's For",
-        'nav-compliance': 'Compliance', 'nav-deployment': 'Deployment', 'nav-faq': 'FAQ',
-        'nav-cta': 'Book Free Consultation',
-        'hero-label': 'Core Banking Software for South African CFIs',
-        'hero-h1': 'Banking software built for the institutions that put people first.',
-        'hero-copy': 'Paxiss is purpose-built core banking for South African cooperative financial institutions. Fully customisable, locally supported. From a Pretoria team with 40 years experience in banking.',
-        'hero-cta-primary': 'Book Your Free Consultation', 'hero-cta-secondary': 'See How Paxiss Works',
-        'stat-years': 'years in the banking systems environment', 'stat-free': 'Free',
-        'stat-languages': 'Languages: English<br>and Afrikaans', 'stat-consult': 'Initial consultation,<br>every time',
-        'ctx-label': 'The Problem',
-        'ctx-h2': 'Cooperative banking in South Africa is underserved by every system that exists.',
-        'ctx-p1': 'Thirty registered cooperative financial institutions hold over R656 million in member deposits. They operate under the Cooperative Banks Act and answer to the Prudential Authority. The stakes are real.',
-        'ctx-p2': "Yet most software available to them was built for commercial banks, global credit unions, or informal savings groups. Not quite any of them. Generic platforms require expensive adaptation. Foreign solutions don't know South African regulation. Local developers often lack the banking depth to build something trustworthy.",
-        'ctx-p3': 'The institutions doing the most important work in South Africa, community upliftment, member empowerment, financial inclusion in underserved areas, are making do with tools that were never designed for them.',
-        'feat-label': 'Paxiss — What It Does', 'feat-h2': "Everything a CFI needs. <br>Nothing it doesn't.",
-        'feat-copy': 'Paxiss covers the full operational surface of a regulated cooperative financial institution, built so your team can run confidently from day one.',
-        'feat-g1': 'Core Banking', 'feat-f1-title': 'Member Management',
-        'feat-f1-body': 'Full member lifecycle from registration to exit, with share accounts, FICA records, and KYC documentation in one place.',
-        'feat-f2-title': 'Loan Products',
-        'feat-f2-body': "Configurable loan types, repayment schedules, and arrears management. Adapted to your institution's specific lending rules and member needs.",
-        'feat-f3-title': 'Savings and Deposits',
-        'feat-f3-body': 'Share management, fixed deposits, and current accounts built to match the diversity of cooperative savings products.',
-        'feat-g2': 'Governance and Compliance', 'feat-f4-title': 'User and Access Control',
-        'feat-f4-body': 'Role-based permissions, mandate numbers, login tracking, and full audit trails. Your governance structure, enforced in software.',
-        'feat-f5-title': 'Forensic Tracking',
-        'feat-f5-body': 'Every transaction, every change, every access: logged. Designed for institutions where accountability to members is non-negotiable.',
-        'feat-f6-title': 'General Ledger Integration',
-        'feat-f6-body': 'Automated GL with CODI-compliant reporting. Connects to external accounting and BI platforms without double-entry friction.',
-        'feat-g3': 'Reporting and Intelligence', 'feat-f7-title': 'Regulatory Reporting',
-        'feat-f7-body': 'Pre-built reports aligned to Prudential Authority submission requirements. No manual reformatting at quarter-end.',
-        'feat-f8-title': 'FICA Compliance Tools',
-        'feat-f8-body': 'Customer due diligence, KYC management, and transaction monitoring built into the daily workflow, not bolted on later.',
-        'feat-f9-title': 'Management Dashboards',
-        'feat-f9-body': 'Board-ready summaries and operational views for your management team, in real time, without spreadsheets.',
-        'cap-label': 'Platform Capabilities', 'cap-h2': 'A complete system.<br>No add-ons required.',
-        'cap-intro': 'Every feature listed below is included in Paxiss as standard. Nothing is gated behind an upgrade tier or a separate module.',
-        'cap-cat-core': 'Core Banking', 'cap-1': 'Member registration and lifecycle management',
-        'cap-2': 'Share account administration', 'cap-3': 'Configurable loan products',
-        'cap-4': 'Loan repayment and arrears management', 'cap-5': 'Fixed deposit management',
-        'cap-6': 'Current account management', 'cap-cat-compliance': 'Compliance and Regulation',
-        'cap-7': 'FICA compliance tools and KYC management', 'cap-8': 'CODI-compliant financial reporting',
-        'cap-9': 'Prudential Authority regulatory submissions', 'cap-10': 'POPIA-aligned data handling',
-        'cap-11': 'Full audit trail and immutable transaction log', 'cap-12': 'Forensic transaction tracking',
-        'cap-cat-security': 'Security and Access', 'cap-13': 'Role-based access control',
-        'cap-14': 'User mandate management', 'cap-15': 'Login and session tracking',
-        'cap-cat-reporting': 'Reporting and Intelligence', 'cap-16': 'General ledger integration',
-        'cap-17': 'Management dashboards (real-time data)', 'cap-18': 'Pre-built regulatory reports',
-        'cap-19': 'External BI tool integration', 'cap-cat-infra': 'Infrastructure and Support',
-        'cap-20': 'SaaS and on-premise deployment options', 'cap-21': 'English and Afrikaans interface',
-        'cap-22': 'Web, desktop, and mobile access', 'cap-23': 'Data migration support',
-        'cap-24': 'Staff training and onboarding',
-        'who-label': "Who It's For", 'who-h2': 'Built for every form of cooperative finance in South Africa.',
-        'who-c1-title': 'Cooperative Financial Institutions',
-        'who-c1-body': 'Registered CFIs operating under the Cooperative Banks Act. Paxiss handles everything from member onboarding to Prudential Authority submissions.',
-        'who-c2-title': 'Cooperative Banks',
-        'who-c2-body': 'Licensed cooperative banks requiring a full core banking platform without the enterprise price tag or the adaptation overhead of commercial systems.',
-        'who-c3-title': 'Credit Unions',
-        'who-c3-body': 'Community-based credit unions seeking to formalise and strengthen operations without losing the human character that defines them.',
-        'who-c4-title': 'Stokvel Organisations',
-        'who-c4-body': 'Savings groups and stokvel management bodies moving toward transparency and formalisation. Paxiss makes the transition from informal to compliant manageable.',
-        'who-c5-title': 'Development Finance Entities',
-        'who-c5-body': "NGOs, government agencies, and capacity-building organisations supporting CFI formation, compliance, and governance across South Africa.",
-        'who-cta-title': 'Not sure where you fit?',
-        'who-cta-body': "The free consultation exists precisely for this. Tell us about your institution and we'll tell you honestly whether Paxiss is the right fit.",
-        'who-cta-link': 'Book a conversation',
-        'ide-label': 'Why IDE Systems',
-        'ide-h2': 'Forty years inside South African banking. One product built from that knowledge.',
-        'ide-p1': "IDE Systems has been developing banking systems in South Africa since before most of its clients' institutions existed. That includes major commercial bank implementations, the kind of projects that teach you what robustness actually means.",
-        'ide-p2': "Paxiss emerged from a specific recognition: the cooperative banking sector was being served poorly by everyone. So we built something purpose-made. Not adapted. Not reskinned. Built from the ground up for the regulatory and community realities of South African CFIs.",
-        'ide-p3': 'We are a Pretoria team. We understand the Cooperative Banks Act the way accountants understand the Tax Act: not as a checklist, but as a reality we work inside every day.',
-        'ide-t1-title': '40+ years of SA banking experience',
-        'ide-t1-body': "Including implementation work at major South African commercial banks. That track record doesn't come from a brochure.",
-        'ide-t2-title': 'Cooperative Banks Act No. 40 of 2007',
-        'ide-t2-body': 'Paxiss is designed around this legislation. Not retrofitted to it after the fact.',
-        'ide-t3-title': 'Full customisation, no exceptions',
-        'ide-t3-body': 'No two CFIs are structured identically. Paxiss adapts to your governance model, product range, and member workflows.',
-        'ide-t4-title': 'Locally built, locally supported',
-        'ide-t4-body': "Pretoria-based team. You're not raising a ticket into a foreign helpdesk. You're calling people who understand your context.",
-        'ide-t5-title': 'Free consultation, always',
-        'ide-t5-body': "No obligation. We'd rather give you an honest hour of our time than sell you something that isn't the right fit.",
-        'faq-label': 'Frequently Asked Questions', 'faq-h2': 'Questions worth asking before you decide.',
-        'faq-q1': 'Is Paxiss compliant with the Prudential Authority and Cooperative Banks Act requirements?',
-        'faq-a1': 'Yes. Paxiss is purpose-built for the South African regulatory environment. The system includes FICA compliance tools, CODI-compliant reporting, and audit infrastructure designed specifically for registered cooperative financial institutions under the Cooperative Banks Act No. 40 of 2007. Compliance is not an add-on module. It is baked into how the system works.',
-        'faq-q2': 'Can Paxiss be deployed on our own servers, or is it only available as a cloud service?',
-        'faq-a2': 'Both. Paxiss offers a fully managed SaaS deployment or an in-house installation on your own infrastructure. The decision comes down to your IT capacity, data governance preferences, and regulatory context. Our team will help you work through that during your free consultation, honestly and without pressure toward either option.',
-        'faq-q3': 'How long does implementation take, and what support is provided during onboarding?',
-        'faq-a3': "Timelines vary based on the institution's size, existing systems, and the modules required. IDE Systems provides hands-on onboarding throughout: data migration assistance, staff training, and post-go-live support. Implementation is treated as a partnership handoff, not a contract fulfilment. You don't go live until you're confident.",
-        'faq-q4': "Can the system be customised to our institution's specific products and workflows?",
-        'faq-a4': 'Yes. Full customisation is one of the core differences between Paxiss and commercial banking software. No two cooperative institutions are structured identically. Paxiss adapts to your specific loan products, savings structures, member management workflows, and governance model. Customisation is part of the implementation, not an expensive extra.',
-        'faq-q5': 'What languages does Paxiss support, and is it accessible to members in rural areas?',
-        'faq-a5': "Paxiss supports English and Afrikaans across the platform. This matters for institutions serving communities in predominantly Afrikaans-speaking regions, or where operational staff require Afrikaans interfaces. Additional language support can be scoped based on the institution's needs. The platform is web-accessible, meaning staff in rural branches can work from any internet-connected device.",
-        'faq-q6': 'How does Paxiss handle FICA compliance and CODI reporting?',
-        'faq-a6': 'FICA compliance tools are built into the member onboarding and transaction workflows. Customer due diligence, KYC record management, and transaction monitoring are part of the daily process, not a separate compliance layer managed elsewhere. CODI reporting is automated through the general ledger module, generating compliant financial statements directly from live data. Month-end reporting stops being a crisis.',
-        'cta-label': 'Free Consultation', 'cta-h2': 'Talk to the people<br>who built this.',
-        'cta-body': 'One conversation is usually enough to know if Paxiss is the right fit for your institution. No pitch deck, no commitment. An honest discussion about where you are and what you need.',
-        'cta-btn-call': 'Call 012 346 6551', 'cta-btn-email': 'Email Us Directly',
-        'comp-label': 'Compliance and Security',
-        'comp-h2': "Compliance isn't a feature.<br>It's the foundation.",
-        'comp-copy': 'Registered CFIs operate in a heavily supervised environment. Paxiss was designed with that reality at its core, not adapted to it after the fact.',
-        'comp-sarb-h3': 'SARB Prudential Authority',
-        'comp-sarb-p1': 'Paxiss is built to the reporting and operational standards required by the Prudential Authority for registered CFIs. Quarterly returns, compliance submissions, and capital adequacy tracking are all supported.',
-        'comp-sarb-p2': 'The system generates reports in the formats the PA expects, reducing the manual reformatting that creates errors.',
-        'comp-fica-h3': 'FICA and POPIA',
-        'comp-fica-p1': 'Customer due diligence, identity verification, and KYC record management are integrated into member onboarding and ongoing transaction workflows. Not managed separately.',
-        'comp-fica-p2': 'Data handling within Paxiss is designed to meet POPIA requirements. Member data stays where it belongs.',
-        'comp-codi-h3': 'CODI Reporting',
-        'comp-codi-p1': 'Co-operative Banks Development Agency reporting requirements are automated within the general ledger module. Month-end and year-end reporting becomes a process, not a crisis.',
-        'comp-codi-p2': 'Paxiss generates CODI-compliant financial statements directly from live data.',
-        'comp-audit-h3': 'Audit Trails and Forensics',
-        'comp-audit-p1': 'Every transaction, user action, and system event is logged immutably. If something ever requires investigation, the record is there. This protects your institution and your members.',
-        'comp-audit-p2': 'Role-based access control ensures no user has access beyond what their mandate specifies.',
-        'comp-badge1': 'Cooperative Banks Act No. 40 of 2007', 'comp-badge2': 'SARB Prudential Authority',
-        'comp-badge3': 'FICA Compliant', 'comp-badge4': 'CODI Aligned', 'comp-badge5': 'POPIA Aligned', 'comp-badge6': 'Full Audit Trail',
-        'dep-label': 'Deployment Options', 'dep-h2': 'Your infrastructure decision.',
-        'dep-copy': "Paxiss is the same platform whether you run it in the cloud or on your own servers. The deployment model doesn't change what the software does.",
-        'dep-saas-label': 'SaaS', 'dep-saas-h3': 'Managed Cloud Hosting',
-        'dep-saas-p': 'We handle the infrastructure, updates, backups, and uptime monitoring. Your team logs in and works. No server costs, no IT overhead, no maintenance window surprises.',
-        'dep-saas-li1': 'No local IT infrastructure required', 'dep-saas-li2': 'Automatic updates and security patches',
-        'dep-saas-li3': 'Predictable monthly cost', 'dep-saas-li4': 'Suited for smaller institutions with limited IT capacity',
-        'dep-ih-label': 'In-House', 'dep-ih-h3': 'On-Premise Installation',
-        'dep-ih-p': 'Paxiss runs on your own servers. You control the data environment, the access, and the integration architecture. Preferred by institutions with data sovereignty requirements or existing IT capacity.',
-        'dep-ih-li1': 'Full data sovereignty on your infrastructure', 'dep-ih-li2': 'Deeper integration with internal systems',
-        'dep-ih-li3': 'Preferred for regulated data environments', 'dep-ih-li4': 'Full implementation support from IDE Systems',
-        'dep-strip1-h': 'Multi-language support', 'dep-strip1-p': 'English and Afrikaans across the platform. Additional language support available on request.',
-        'dep-strip2-h': 'GL and accounting integration', 'dep-strip2-p': 'Connects to external accounting systems and BI tools. No duplicate data entry across platforms.',
-        'dep-strip3-h': 'Web, mobile, and desktop', 'dep-strip3-p': 'Platform-agnostic access. Staff and administrators work from any device, anywhere.',
-        'proof-label': 'Track Record', 'proof-h2': 'The work speaks.<br>The experience is real.',
-        'proof-copy': 'Client testimonials from institutions currently using Paxiss are being gathered and will appear here. What we can tell you is where the expertise behind the platform came from.',
-        'proof-quote1': 'Our team has been involved in product, software, and systems development in South Africa for more than 40 years, including extensive experience developing and implementing systems in major banks.',
-        'proof-source1': 'IDE Systems, Product Overview',
-        'proof-quote2': 'Speak to a reference client directly. We can connect you with cooperative institutions currently running on Paxiss. Ask us anything about the system, the support, and the implementation experience.',
-        'proof-ref-link': 'Request a reference client introduction',
-        'proof-stat-label': 'Registered cooperative financial institutions in South Africa',
-        'proof-stat-body': 'Holding over R656 million in member deposits and R594 million in member savings. A small sector by count, and one that carries enormous community responsibility.',
-        'proof-stat-source': 'Source: SARB Prudential Authority Annual Report, 2024',
-        'dl-label': 'Free Resource', 'dl-h2': 'The CFI Compliance Checklist',
-        'dl-p1': 'What your banking system must do under the Cooperative Banks Act. A practical reference for CFI administrators and cooperative bank executives.',
-        'dl-p2': 'Covers Prudential Authority requirements, FICA obligations, CODI reporting, member data management, and governance infrastructure. Written in plain language, not legal code.',
-        'dl-fname-label': 'First Name', 'dl-fname-ph': 'Your first name',
-        'dl-email-label': 'Email Address', 'dl-submit': 'Send Me the Checklist',
-        'dl-privacy': 'We respect your privacy. No spam, ever. Unsubscribe anytime.',
-        'dl-success-h': 'On its way.', 'dl-success-p': "Check your inbox. If it doesn't arrive within a few minutes, check your spam folder."
-      },
-      af: {
-        'nav-solutions': 'Oplossings', 'nav-capabilities': 'Vermoëns', 'nav-who': 'Vir wie',
-        'nav-compliance': 'Nakoming', 'nav-deployment': 'Ontplooiing', 'nav-faq': 'Vrae',
-        'nav-cta': 'Bespreek Gratis Konsultasie',
-        'hero-label': "Kern Bank sagteware vir Suid-Afrikaanse KFI's",
-        'hero-h1': 'Kern Bank sagteware ontwerp vir instellings wat mense eerste stel.',
-        'hero-copy': "Paxiss is doelgeboude kernbanksagteware vir Suid-Afrikaanse koöperatiewe finansiële instellings. Volledig aanpasbaar, plaaslik ondersteun. Van 'n Pretoriase span met 40 jaar ervaring in bankwese.",
-        'hero-cta-primary': 'Bespreek u Gratis Konsultasie', 'hero-cta-secondary': 'Sien Hoe Paxiss Werk',
-        'stat-years': 'jaar in die bankstelselomgewing', 'stat-free': 'Gratis',
-        'stat-languages': 'Tale: Engels<br>en Afrikaans', 'stat-consult': 'Aanvanklike konsultasie,<br>elke keer',
-        'ctx-label': 'Die Probleem',
-        'ctx-h2': 'Koöperatiewe bankwese in Suid-Afrika word deur elke bestaande stelsel onderbenut.',
-        'ctx-p1': 'Dertig geregistreerde koöperatiewe finansële instellings hou meer as R656 miljoen in ledestortings. Hulle werk onder die Wet op Koöperatiewe Banke en is onderhewig aan die Prudensiele Owerheid. Die risiko is werklik.',
-        'ctx-p2': "Tog is die meeste sagteware wat vir hulle beskikbaar is, vir kommersiële banke, globale kredietunies of informele spaargroepe gebou. Nie een spesifiek ontwerp nie. Generiese platforms vereis duur aanpassing. Buitelandse oplossings ken nie Suid-Afrikaanse regulasie nie. Plaaslike ontwikkelaars het dikwels nie die nodige kennis en ervaring om 'n gehalte produk te lewer nie.",
-        'ctx-p3': 'Die instellings wat die belangrikste werk in Suid-Afrika doen, naamlik gemeenskapsontwikkeling, lidbemagtiging, finansële insluiting in onderbedeelde gebiede, werk met gereedskap wat nooit vir hulle ontwerp is nie.',
-        'feat-label': 'Paxiss — Wat Dit Doen', 'feat-h2': "Alles wat 'n KFI nodig het. <br>Niks onnodig nie.",
-        'feat-copy': "Paxiss dek die volle operasionele veld van 'n gereguleerde koöperatiewe finansële instelling, gebou sodat u span van dag een af met vertroue kan werk.",
-        'feat-g1': 'Kernbankwese', 'feat-f1-title': 'Ledebestuur',
-        'feat-f1-body': 'Volle ledeleefsiklus van registrasie tot uitgang, met sentrale aandeelrekeninge, FICA-rekords en KYC-dokumentasie.',
-        'feat-f2-title': 'Leningsprodukte',
-        'feat-f2-body': "Instelbare leningtipes, terugbetalingskedules en agterstallige bestuur. Aangepas by u instelling se spesifieke uitleenreëls en ledelbehoeftes.",
-        'feat-f3-title': "Spaargeld en Deposito's",
-        'feat-f3-body': "Aandeelbestuur, vaste deposito's en lopende rekeninge gebou om die diversiteit van koöperatiewe spaarprodukte te pas.",
-        'feat-g2': 'Bestuur en Nakoming', 'feat-f4-title': 'Gebruikers- en Toegangsbeheer',
-        'feat-f4-body': 'Rolgebaseerde toestemmings, mandaatnommers, aanmeldopsporing en volledige ouditsporte. U bestuursstruktuur, in sagteware afgedwing.',
-        'feat-f5-title': 'Forensiese Opsporing',
-        'feat-f5-body': 'Elke transaksie, verandering en toegang: aangeteken. Ontwerp vir instellings waar aanspreeklikheid aan lede nie onderhandelbaar is nie.',
-        'feat-f6-title': 'Algemene Grootboekintegrasie',
-        'feat-f6-body': 'Geoutomatiseerde GL met CODI-voldoende verslagdoening. Verbind aan eksterne rekeningkundige en BI-platforms sonder dubbele-inskrywingswrywing.',
-        'feat-g3': 'Verslagdoening en Intelligensie', 'feat-f7-title': 'Regulatoriese Verslagdoening',
-        'feat-f7-body': 'Vooraf-geboude verslae wat ooreenstem met Prudensiele Owerheid se indieningsvereistes. Geen handmatige herformatering aan die kwartaalseinde nie.',
-        'feat-f8-title': 'FICA Nakomingshulpmiddels',
-        'feat-f8-body': 'Kliënte-sorgvuldigheid, KYC-bestuur en transaksie-monitering ingebou in die daaglikse werkvloei, nie agterna aangeheg nie.',
-        'feat-f9-title': 'Bestuurspanele',
-        'feat-f9-body': 'Raadsgereed opsommings en operasionele aansigte vir u bestuurspan, betyds, sonder sigblaaie.',
-        'cap-label': 'Platform Vermoëns', 'cap-h2': "'n Volledige stelsel. Geen byvoegings benodig nie.",
-        'cap-intro': "Elke item hieronder gelys word standaard in Paxiss ingesluit. Niks word agter 'n opgraderingslaag of 'n aparte module geberg nie.",
-        'cap-cat-core': 'Kernbankwese', 'cap-1': 'Lederegistrasie en lewensiklusbestuur',
-        'cap-2': 'Aandeelrekeningadministrasie', 'cap-3': 'Instelbare leningsprodukte',
-        'cap-4': 'Leningsterugbetaling en agterstallige bestuur', 'cap-5': 'Vastestorting-bestuur',
-        'cap-6': 'Lopende rekeningbestuur', 'cap-cat-compliance': 'Nakoming en Regulasie',
-        'cap-7': 'FICA nakomingshulpmiddels en KYC-bestuur', 'cap-8': 'CODI-voldoende finansële verslagdoening',
-        'cap-9': 'Prudensiele Owerheid regulatoriese indiening', 'cap-10': 'POPIA-gerigte datahantering',
-        'cap-11': 'Volledige ouditspoort en onveranderlike transaksierekord', 'cap-12': 'Forensiese transaksieopsporing',
-        'cap-cat-security': 'Sekuriteit en Toegang', 'cap-13': 'Rolgebaseerde toegangsbeheer',
-        'cap-14': 'Gebruikersmandaatbestuur', 'cap-15': 'Aanmelding- en sessie-opsporing',
-        'cap-cat-reporting': 'Verslagdoening en Intelligensie', 'cap-16': 'Algemene grootboekintegrasie',
-        'cap-17': 'Bestuurspanele (intydse data)', 'cap-18': 'Vooraf-geboude regulatoriese verslae',
-        'cap-19': 'Eksterne BI-instrument integrasie', 'cap-cat-infra': 'Infrastruktuur en Ondersteuning',
-        'cap-20': 'SaaS en ter plaatse ontplooiingsopsies', 'cap-21': 'Engels en Afrikaans koppelvlak',
-        'cap-22': 'Web-, lessenaars- en mobiele toegang', 'cap-23': 'Datamigrasie-ondersteuning',
-        'cap-24': 'Personeelsopleiding en aan-boord-bring',
-        'who-label': 'Vir Wie', 'who-h2': 'Gebou vir elke vorm van koöperatiewe finansies in Suid-Afrika.',
-        'who-c1-title': 'Koöperatiewe Finansële Instellings',
-        'who-c1-body': "Geregistreerde KFI's wat onder die Wet op Koöperatiewe Banke werk. Paxiss hanteer alles van ledeonboarding tot Prudensiele Owerheid-inskrywings.",
-        'who-c2-title': 'Koöperatiewe Banke',
-        'who-c2-body': "Gelisensieerde koöperatiewe banke wat 'n volledige kernbankplatform benodig sonder die entreprys-pryskaartjie of die aanpassingsoorhoofkoste van kommersiële stelsels.",
-        'who-c3-title': 'Kredietunies',
-        'who-c3-body': 'Gemeenskapsgebaseerde kredietunies wat hul bedrywighede wil formaliseer en versterk sonder om die menslike karakter wat hulle definieer te verloor.',
-        'who-c4-title': 'Stokvelbedrywe',
-        'who-c4-body': 'Spaargroepe en stokvelbestuurliggame wat na deursigtigheid en formalisering beweeg. Paxiss maak die oorgang van informeel na voldoend hanteerbaar.',
-        'who-c5-title': 'Ontwikkelingsfinansieringsinstansies',
-        'who-c5-body': "NRO's, staatsagentskappe en kapasiteitsbouende organisasies wat KFI-vorming, nakoming en bestuur regoor Suid-Afrika ondersteun.",
-        'who-cta-title': 'Nie seker waar u inpas nie?',
-        'who-cta-body': "Die gratis konsultasie bestaan juis hiervoor. Vertel ons van u instelling en ons sal eerlik sê of Paxiss die regte passing is.",
-        'who-cta-link': "Bespreek 'n gesprek",
-        'ide-label': 'Waarom IDE Systems',
-        'ide-h2': 'Veertig jaar binne Suid-Afrikaanse bankwese. Een produk gebou uit daardie kennis.',
-        'ide-p1': "IDE Systems ontwikkel bankstelsels in Suid-Afrika al voordat die meeste van sy kliënte se instellings bestaan het. Dit sluit groot kommersiële bankimplementasies in, die soort projekte wat u leer wat robuustheid werklik beteken.",
-        'ide-p2': "Paxiss het voortgespruit uit 'n spesifieke herkenning: die koöperatiewe banksektor is deur almal swak bedien. So het ons iets doelgemaak gebou. Nie aangepas nie. Nie herbeklee nie. Van die grond af gebou vir die regulatoriese en gemeenskaplikse realiteite van Suid-Afrikaanse KFI's.",
-        'ide-p3': "Ons is 'n Pretoriase span. Ons verstaan die Wet op Koöperatiewe Banke soos rekenmeesters die Belastingwet verstaan: nie as 'n kontrolelys nie, maar as 'n realiteit waarin ons elke dag werk.",
-        'ide-t1-title': '40+ jaar Suid-Afrikaanse bankervaring',
-        'ide-t1-body': "Insluitend implementeringswerk by groot Suid-Afrikaanse kommersiële banke. Daardie rekord kom nie van 'n brosjure nie.",
-        'ide-t2-title': 'Wet op Koöperatiewe Banke Nr. 40 van 2007',
-        'ide-t2-body': 'Paxiss is rondom hierdie wetgewing ontwerp. Nie agteraf daaraan aangepas nie.',
-        'ide-t3-title': 'Volledige aanpassing, geen uitsonderings',
-        'ide-t3-body': "Geen twee KFI's het dieselfde struktuur nie. Paxiss pas aan by u bestuursmodel, produkspektrum en ledewerksvloeie.",
-        'ide-t4-title': 'Plaaslik gebou, plaaslik ondersteun',
-        'ide-t4-body': "Pretoriase span. U stel nie 'n kaartjie in by 'n buitelandse hulptoonbank nie. U bel mense wat u konteks verstaan.",
-        'ide-t5-title': 'Gratis konsultasie, altyd',
-        'ide-t5-body': "Geen verpligting nie. Ons gee eerder 'n eerlike uur van ons tyd as om u iets te verkoop wat nie die regte passing is nie.",
-        'faq-label': 'Gereelde Vrae', 'faq-h2': 'Vrae die moeite werd om te vra voor u besluit.',
-        'faq-q1': 'Is Paxiss voldoend aan die Prudensiele Owerheid en Wet op Koöperatiewe Banke vereistes?',
-        'faq-a1': "Ja. Paxiss is doelgebou vir die Suid-Afrikaanse regulatoriese omgewing. Die stelsel sluit FICA-nakomingshulpmiddels, CODI-voldoende verslagdoening en ouditinfrastruktuur in, spesifiek ontwerp vir geregistreerde koöperatiewe finansële instellings onder die Wet op Koöperatiewe Banke Nr. 40 van 2007. Nakoming is nie 'n byvoegsel nie. Dit is ingebou in hoe die stelsel werk.",
-        'faq-q2': "Kan Paxiss op ons eie bedieners ontplooi word, of is dit slegs as 'n wolkdiens beskikbaar?",
-        'faq-a2': "Albei. Paxiss bied 'n volledig bestuurde SaaS-ontplooiing of 'n ter plaatse installasie op u eie infrastruktuur. Die keuse kom neer op u IT-kapasiteit, datagouwernaansvoorkeure en regulatoriese konteks. Ons span sal u deur dit help tydens u gratis konsultasie, eerlik en sonder druk na enige opsie.",
-        'faq-q3': 'Hoe lank neem implementering, en watter ondersteuning word tydens aan-boord-bring verskaf?',
-        'faq-a3': "Tydslyne wissel na gelang van die instelling se grootte, bestaande stelsels en die modules wat benodig word. IDE Systems bied deurgaans praktiese aan-boord-bring: datamigrasiehulp, personeelsopleiding en na-bekendstelling-ondersteuning. Implementering word as 'n venootskapsoorhandiging behandel, nie 'n kontraknakomming nie. U gaan nie lewendig voordat u seker is nie.",
-        'faq-q4': "Kan die stelsel aangepas word by ons instelling se spesifieke produkte en werkvloeie?",
-        'faq-a4': "Ja. Volledige aanpassing is een van die kernverskille tussen Paxiss en kommersiële banksagteware. Geen twee koöperatiewe instellings het dieselfde struktuur nie. Paxiss pas aan by u spesifieke leningsprodukte, spaarstuktuur, ledebestuurswerkvloeie en bestuursmodel. Aanpassing is deel van die implementering, nie 'n duur ekstra nie.",
-        'faq-q5': 'Watter tale ondersteun Paxiss, en is dit toeganklik vir lede in landelike gebiede?',
-        'faq-a5': "Paxiss ondersteun Engels en Afrikaans regdeur die platform. Dit is belangrik vir instellings wat gemeenskappe in hoofsaaklik Afrikaanssprekende gebiede bedien, of waar bedryfsPersoneel Afrikaanse koppelvlakke benodig. Bykomende taalondersteuning kan uitgebrei word na gelang van die instelling se behoeftes. Die platform is web-toeganklik, wat beteken dat personeel in landelike takke van enige internet-gekoppelde toestel kan werk.",
-        'faq-q6': 'Hoe hanteer Paxiss FICA-nakoming en CODI-verslagdoening?',
-        'faq-a6': "FICA-nakomingshulpmiddels is ingebou in die lede-onboarding en transaksieverwerking werkvloeie. Kliënte-sorgvuldigheid, KYC-rekordbestuur en transaksie-monitering is deel van die daaglikse proses, nie 'n aparte nakomingslaag wat elders bestuur word nie. CODI-verslagdoening is outomaties deur die algemene grootboekmodule, wat voldoende finansële state direk uit lewende data genereer. Maandeindverslagdoening hou op om 'n krisis te wees.",
-        'cta-label': 'Gratis Konsultasie', 'cta-h2': 'Praat met die mense<br>wat dit gebou het.',
-        'cta-body': "Een gesprek is gewoonlik genoeg om te weet of Paxiss die regte passing vir u instelling is. Geen aanbiedingsplatform, geen verbintenis. 'n Eerlike bespreking oor waar u is en wat u nodig het.",
-        'cta-btn-call': 'Skakel 012 346 6551', 'cta-btn-email': "Stuur ons 'n E-pos",
-        'comp-label': 'Nakoming en Sekuriteit',
-        'comp-h2': "Nakoming is nie 'n kenmerk nie.<br>Dit is die grondslag.",
-        'comp-copy': "Geregistreerde KFI's werk in 'n swaar getoesighoudende omgewing. Paxiss is ontwerp met daardie realiteit as kern, nie agteraf daaraan aangepas nie.",
-        'comp-sarb-h3': 'SARB Prudensiele Owerheid',
-        'comp-sarb-p1': "Paxiss is gebou volgens die verslagdoenings- en operasionele standaarde wat die Prudensiele Owerheid vir geregistreerde KFI's vereis. Kwartaallikse opgawes, nakomingsindiening en kapitaaltoereikendheidsopsporing word alles ondersteun.",
-        'comp-sarb-p2': 'Die stelsel genereer verslae in die formate wat die PA verwag, wat handmatige herformatering wat foute veroorsaak, verminder.',
-        'comp-fica-h3': 'FICA en POPIA',
-        'comp-fica-p1': 'Kliënte-sorgvuldigheid, identiteitsverifikasie en KYC-rekordbestuur is geïntegreer in ledeonboarding en voortgesette transaksiewerkvloeie. Nie afsonderlik bestuur nie.',
-        'comp-fica-p2': 'Datahantering binne Paxiss is ontwerp om aan POPIA-vereistes te voldoen. Lededata bly waar dit hoort.',
-        'comp-codi-h3': 'CODI Verslagdoening',
-        'comp-codi-p1': "Ko-operatiewe Banke Ontwikkelingsagentskap verslagdoeningsvereistes is geoutomatiseer binne die algemene grootboekmodule. Maandeinde- en jaareindverslagdoening word 'n proses, nie 'n krisis nie.",
-        'comp-codi-p2': 'Paxiss genereer CODI-voldoende finansële state direk uit lewende data.',
-        'comp-audit-h3': 'Ouditsporte en Forensika',
-        'comp-audit-p1': 'Elke transaksie, gebruikersaksie en stelselgebeurtenis word onveranderbaar aangeteken. As iets ooit ondersoek moet word, is die rekord daar. Dit beskerm u instelling en u lede.',
-        'comp-audit-p2': 'Rolgebaseerde toegangsbeheer verseker dat geen gebruiker toegang het buite wat hul mandaat spesifiseer nie.',
-        'comp-badge1': 'Wet op Koöperatiewe Banke Nr. 40 van 2007', 'comp-badge2': 'SARB Prudensiele Owerheid',
-        'comp-badge3': 'FICA-voldoend', 'comp-badge4': 'CODI-belyn', 'comp-badge5': 'POPIA-belyn', 'comp-badge6': 'Volledige Ouditspoort',
-        'dep-label': 'Ontplooiingsopsies', 'dep-h2': 'U infrastruktuurkeuse.',
-        'dep-copy': "Paxiss is dieselfde platform of u dit in die wolk of op u eie bedieners laat loop. Die ontplooiingsmodel verander nie wat die sagteware doen nie.",
-        'dep-saas-label': 'SaaS', 'dep-saas-h3': 'Bestuurde Wolkgastouing',
-        'dep-saas-p': "Ons hanteer die infrastruktuur, opdaterings, rugsteun en stilstandtyd-monitering. U span meld aan en werk. Geen bedienerkoste, geen IT-oorhoofse, geen instandhoudingsvenstervrassings nie.",
-        'dep-saas-li1': 'Geen plaaslike IT-infrastruktuur benodig nie', 'dep-saas-li2': 'Outomatiese opdaterings en sekuriteitsreëlings',
-        'dep-saas-li3': 'Voorspelbare maandelikse koste', 'dep-saas-li4': "Geskik vir kleiner instellings met beperkte IT-kapasiteit",
-        'dep-ih-label': 'Ter Plaatse', 'dep-ih-h3': 'Ter Plaatse Installasie',
-        'dep-ih-p': "Paxiss loop op u eie bedieners. U beheer die data-omgewing, die toegang en die integrasie-argitektuur. Verkies deur instellings met datasoewereiniteitsvereistes of bestaande IT-kapasiteit.",
-        'dep-ih-li1': 'Volle datasoewereiniteit op u infrastruktuur', 'dep-ih-li2': 'Dieper integrasie met interne stelsels',
-        'dep-ih-li3': 'Verkies vir gereguleerde data-omgewings', 'dep-ih-li4': 'Volledige implementeringsondersteuning van IDE Systems',
-        'dep-strip1-h': 'Meertaalondersteuning', 'dep-strip1-p': "Engels en Afrikaans regdeur die platform. Bykomende taalondersteuning op versoek beskikbaar.",
-        'dep-strip2-h': 'GL en rekeningkundige integrasie', 'dep-strip2-p': "Verbind aan eksterne rekeningkundige stelsels en BI-instrumente. Geen duplikaat data-inskrywing oor platforms nie.",
-        'dep-strip3-h': 'Web, mobiel en lessenaar', 'dep-strip3-p': "Platformonafhanklike toegang. Personeel en administrateurs werk van enige toestel, oral.",
-        'proof-label': 'Rekord', 'proof-h2': 'Die werk praat.<br>Die ervaring is eg.',
-        'proof-copy': "Kliëntegetuienisse van instellings wat tans Paxiss gebruik, word ingesamel en sal hier verskyn. Wat ons u kan vertel, is waar die kundigheid agter die platform vandaan kom.",
-        'proof-quote1': "Ons span was vir meer as 40 jaar betrokke by produk-, sagteware- en stelseloptwikkeling in Suid-Afrika, met uitgebreide ervaring in die ontwikkeling en implementering van stelsels in groot banke.",
-        'proof-source1': 'IDE Systems, Produk-oorsig',
-        'proof-quote2': "Praat direk met 'n verwysingsklient. Ons kan u verbind met koöperatiewe instellings wat tans op Paxiss werk. Vra enigiets oor die stelsel, die ondersteuning en die implementeringservaring.",
-        'proof-ref-link': "Versoek 'n verwysingsklantbekendstelling",
-        'proof-stat-label': 'Geregistreerde koöperatiewe finansiële instellings in Suid-Afrika',
-        'proof-stat-body': "Hou meer as R656 miljoen in ledestortings en R594 miljoen in ledespaartegoede. 'n Klein sektor na telling, en een wat enorme gemeenskapsverantwoordelikheid dra.",
-        'proof-stat-source': 'Bron: SARB Prudensiele Owerheid Jaarverslag, 2024',
-        'dl-label': 'Gratis Hulpbron', 'dl-h2': 'Die KFI Nakomingskontrolelys',
-        'dl-p1': "Wat u bankstelsel moet doen onder die Wet op Koöperatiewe Banke. 'n Praktiese verwysing vir KFI-administrateurs en koöperatiewe bankbestuurders.",
-        'dl-p2': "Dek Prudensiele Owerheid-vereistes, FICA-verpligtinge, CODI-verslagdoening, lededata-bestuur en bestuursinfrastruktuur. Geskryf in eenvoudige taal, nie regskode nie.",
-        'dl-fname-label': 'Voornaam', 'dl-fname-ph': 'U voornaam',
-        'dl-email-label': 'E-posadres', 'dl-submit': 'Stuur My die Kontrolelys',
-        'dl-privacy': 'Ons respekteer u privaatheid. Geen strooipos nie. Teken te enige tyd af.',
-        'dl-success-h': 'Onderweg.', 'dl-success-p': "Kyk in u inkassie. As dit nie binne 'n paar minute aankom nie, kyk u strooiposvouer."
-      }
-    };
+    var i18nCache = {};
 
-    function applyLang(lang) {
-      document.documentElement.lang = lang;
-      var dict = i18n[lang];
-      if (!dict) return;
+    function applyDict(dict) {
       document.querySelectorAll('[data-i18n]').forEach(function(el) {
         var key = el.getAttribute('data-i18n');
         if (dict[key] !== undefined) el.innerHTML = dict[key];
@@ -1900,12 +1670,36 @@
         var key = el.getAttribute('data-i18n-ph');
         if (dict[key] !== undefined) el.placeholder = dict[key];
       });
+    }
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang;
       document.querySelectorAll('.lang-btn').forEach(function(btn) {
         var active = btn.dataset.lang === lang;
         btn.classList.toggle('active', active);
         btn.setAttribute('aria-pressed', active ? 'true' : 'false');
       });
       try { localStorage.setItem('paxiss-lang', lang); } catch(e) {}
+
+      if (i18nCache[lang]) {
+        applyDict(i18nCache[lang]);
+        return;
+      }
+      fetch('lang/' + lang + '.json')
+        .then(function(r) { return r.json(); })
+        .then(function(dict) {
+          i18nCache[lang] = dict;
+          applyDict(dict);
+        })
+        .catch(function() {});
+    }
+
+    function chooseLang(lang) {
+      applyLang(lang);
+      try { localStorage.setItem('paxiss-lang-chosen', '1'); } catch(e) {}
+      var popup = document.getElementById('lang-popup');
+      if (popup) popup.classList.remove('visible');
+      document.body.style.overflow = '';
     }
 
     // Nav: transparent over hero, solid on scroll
@@ -2007,11 +1801,24 @@
       }
     }
 
-    // Init language from localStorage
+    // Init language from localStorage or show popup
     (function() {
+      var chosen = false;
       var saved = 'en';
-      try { saved = localStorage.getItem('paxiss-lang') || 'en'; } catch(e) {}
-      if (saved !== 'en') applyLang(saved);
+      try {
+        chosen = localStorage.getItem('paxiss-lang-chosen') === '1';
+        saved = localStorage.getItem('paxiss-lang') || 'en';
+      } catch(e) {}
+
+      if (chosen) {
+        if (saved !== 'en') applyLang(saved);
+      } else {
+        var popup = document.getElementById('lang-popup');
+        if (popup) {
+          popup.classList.add('visible');
+          document.body.style.overflow = 'hidden';
+        }
+      }
     })();
 
     // Feature accordion
@@ -2033,16 +1840,6 @@
       }
     }
 
-    // Email capture form
-    function handleFormSubmit(e) {
-      e.preventDefault();
-      // TODO: Wire to Mailchimp / Brevo / Formspree — replace the line below
-      // fetch('/api/subscribe', { method: 'POST', body: new FormData(e.target) })
-      var form = document.getElementById('download-form');
-      var success = document.getElementById('form-success');
-      form.style.display = 'none';
-      success.style.display = 'block';
-    }
   </script>
 
 </body>
