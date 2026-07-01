@@ -163,6 +163,11 @@
   "cta-body": "One conversation is usually enough to know if Paxiss is the right fit. No pitch deck, no commitment. An honest discussion about where you are and what you need.",
   "cta-btn-call": "Call 012 346 6551",
   "cta-btn-email": "Email Us Directly",
+  "cta-label-phone": "Phone",
+  "cta-label-mobile": "Mobile",
+  "cta-label-email": "Email",
+  "cta-label-location": "Location",
+  "cta-location-value": "Pretoria, South Africa",
 
   "foot-tagline": "Purpose-built core banking software for South African cooperative financial institutions. Locally developed, locally supported, regulatory-grade.",
   "foot-col1-heading": "Platform",
