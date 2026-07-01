@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paxiss Translation Review — English / Afrikaans</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; background: #f5f5f5; color: #111; }
+  header { background: #0f172a; color: #fff; padding: 24px 32px; }
+  header h1 { font-size: 20px; font-weight: 600; }
+  header p { font-size: 13px; color: #94a3b8; margin-top: 6px; }
+  .instructions { background: #fffbeb; border-left: 4px solid #f59e0b; margin: 24px 32px; padding: 16px 20px; border-radius: 4px; font-size: 13px; line-height: 1.6; }
+  .instructions strong { display: block; margin-bottom: 6px; font-size: 14px; }
+  .container { padding: 0 32px 48px; }
+  .section { margin-top: 32px; }
+  .section-title { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6366f1; background: #eef2ff; padding: 8px 12px; border-radius: 4px; margin-bottom: 2px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  thead th { background: #1e293b; color: #fff; padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }
+  thead th:first-child { width: 16%; color: #94a3b8; }
+  thead th:nth-child(2) { width: 42%; }
+  thead th:nth-child(3) { width: 42%; }
+  tbody tr { border-bottom: 1px solid #f1f5f9; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f8fafc; }
+  td { padding: 10px 14px; vertical-align: top; line-height: 1.55; }
+  td:first-child { font-family: monospace; font-size: 11px; color: #94a3b8; white-space: nowrap; padding-top: 12px; }
+  td:nth-child(2) { border-left: 1px solid #f1f5f9; }
+  td:nth-child(3) { border-left: 1px solid #f1f5f9; color: #1e40af; }
+  .group-row td { background: #f8fafc; font-weight: 600; font-size: 13px; }
+  .group-row td:first-child { font-family: monospace; font-weight: 400; font-size: 11px; }
+  td[contenteditable] { outline: none; cursor: text; }
+  td[contenteditable]:hover { background: #eff6ff !important; }
+  td[contenteditable]:focus { background: #dbeafe !important; box-shadow: inset 0 0 0 2px #3b82f6; }
+  td[contenteditable].changed { color: #15803d; background: #f0fdf4 !important; }
+  .toolbar { position: sticky; top: 0; z-index: 100; background: #1e293b; padding: 10px 32px; display: flex; align-items: center; gap: 12px; }
+  .toolbar span { color: #94a3b8; font-size: 13px; }
+  .toolbar button { background: #6366f1; color: #fff; border: none; padding: 8px 18px; border-radius: 5px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .toolbar button:hover { background: #4f46e5; }
+  .toolbar button.secondary { background: #334155; }
+  .toolbar button.secondary:hover { background: #475569; }
+  #change-count { background: #f59e0b; color: #000; border-radius: 12px; padding: 2px 9px; font-size: 12px; font-weight: 700; display: none; }
+  #copy-output { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: #fff; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 24px; width: 700px; max-width: 95vw; z-index: 999; }
+  #copy-output h3 { margin-bottom: 12px; font-size: 15px; }
+  #copy-output p { font-size: 12px; color: #64748b; margin-bottom: 10px; }
+  #copy-output textarea { width: 100%; height: 260px; font-family: monospace; font-size: 12px; border: 1px solid #e2e8f0; border-radius: 5px; padding: 10px; resize: vertical; }
+  #copy-output .btns { display: flex; gap: 10px; margin-top: 12px; }
+  #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; }
+  @media print {
+    body { background: white; font-size: 12px; }
+    header { background: #0f172a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    thead th { background: #1e293b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .instructions { display: none; }
+    .toolbar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Paxiss — Translation Review Document</h1>
+  <p>English original vs. Afrikaans translation — all site copy, key by key</p>
+</header>
+
+<div class="toolbar">
+  <span>Afrikaans column is editable — click any blue cell and type</span>
+  <span id="change-count">0 changes</span>
+  <button type="button" onclick="exportChanges()">Copy changes</button>
+  <button type="button" class="secondary" onclick="resetAll()">Reset all</button>
+</div>
+
+<div id="overlay" onclick="closeExport()"></div>
+<div id="copy-output">
+  <h3>Your changes — paste this back to Claude</h3>
+  <p>All edited rows are listed below as key: new Afrikaans text. Copy everything and paste it into the chat.</p>
+  <textarea id="export-text" readonly></textarea>
+  <div class="btns">
+    <button type="button" onclick="copyToClipboard()">Copy to clipboard</button>
+    <button type="button" class="secondary" onclick="closeExport()">Close</button>
+  </div>
+</div>
+
+<div class="instructions">
+  <strong>How to use this document</strong>
+  Edit the Afrikaans column wherever the translation needs to be changed. Send the edited file (or a copy of the text) back and the JSON files will be updated accordingly. The key column (grey, left) identifies each string — do not change those. HTML tags like &lt;br&gt; in the text should be kept as-is.
+</div>
+
+<div class="container">
+
+  <!-- NAVIGATION -->
+  <div class="section">
+    <div class="section-title">Navigation</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>nav-solutions</td><td>Solutions</td><td>Oplossings</td></tr>
+        <tr><td>nav-who</td><td>Who It's For</td><td>Vir Wie</td></tr>
+        <tr><td>nav-deployment</td><td>Deployment</td><td>Ontplooiing</td></tr>
+        <tr><td>nav-faq</td><td>FAQ</td><td>Vrae</td></tr>
+        <tr><td>nav-cta</td><td>Book Free Consultation</td><td>Bespreek Gratis Konsultasie</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LANGUAGE POPUP -->
+  <div class="section">
+    <div class="section-title">Language Selection Popup</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>lang-popup-h2</td><td>Choose your language</td><td>Kies u taal</td></tr>
+        <tr><td>lang-popup-p</td><td>This site is available in English and Afrikaans.</td><td>Hierdie webwerf is beskikbaar in Engels en Afrikaans.</td></tr>
+        <tr><td>lang-popup-en</td><td>Continue in English</td><td>Continue in English</td></tr>
+        <tr><td>lang-popup-af</td><td>Gaan voort in Afrikaans</td><td>Gaan voort in Afrikaans</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- HERO -->
+  <div class="section">
+    <div class="section-title">Hero Section</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>hero-label</td><td>Core Banking Software for South African CFIs</td><td>Kernbanksagteware vir Suid-Afrikaanse KFI's</td></tr>
+        <tr><td>hero-h1</td><td>Banking software built for the institutions that put people first.</td><td>Banksagteware gebou vir die instellings wat mense eerste stel.</td></tr>
+        <tr><td>hero-copy</td><td>Paxiss is purpose-built core banking for South African cooperative financial institutions. Fully customisable, locally supported. From a Pretoria team with 40 years experience in banking.</td><td>Paxiss is doelgeboude kernbanksagteware vir Suid-Afrikaanse kooperatiewe finansiele instellings. Volledig aanpasbaar, plaaslik ondersteun. Van 'n Pretoriase span met 40 jaar ervaring in bankwese.</td></tr>
+        <tr><td>hero-cta-primary</td><td>Book Your Free Consultation</td><td>Bespreek u Gratis Konsultasie</td></tr>
+        <tr><td>hero-cta-secondary</td><td>See How Paxiss Works</td><td>Sien Hoe Paxiss Werk</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES INTRO -->
+  <div class="section">
+    <div class="section-title">Feature Catalogue — Intro</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>feat-label</td><td>Paxiss Feature Catalogue</td><td>Paxiss Kenmerkekatalogus</td></tr>
+        <tr><td>feat-h2</td><td>Everything a CFI needs. &lt;br&gt;Nothing it doesn't.</td><td>Alles wat 'n KFI nodig het. &lt;br&gt;Niks onnodig nie.</td></tr>
+        <tr><td>feat-copy</td><td>Paxiss covers the full operational surface of a regulated cooperative financial institution, built so your team can run confidently from day one.</td><td>Paxiss dek die volle operasionele veld van 'n gereguleerde kooperatiewe finansiele instelling, gebou sodat u span van dag een af met vertroue kan werk.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 1 -->
+  <div class="section">
+    <div class="section-title">Feature Group 1 — Core Banking Operations</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g1</td><td>Core Banking Operations</td><td>Kernbankbedrywighede</td></tr>
+        <tr><td>feat-cb-1-title</td><td>Client Profile Management</td><td>Klientprofielbestuur</td></tr>
+        <tr><td>feat-cb-1-body</td><td>Capture and maintain comprehensive client profile information, including personal details, contact information, identification records, account relationships, and regulatory data.</td><td>Vang en onderhou omvattende klientprofielinligting, insluitend persoonlike besonderhede, kontakinligting, identifikasierekords, rekeningverhoudings en regulatoriese data.</td></tr>
+        <tr><td>feat-cb-2-title</td><td>Account Management</td><td>Rekeningbestuur</td></tr>
+        <tr><td>feat-cb-2-body</td><td>Open, maintain, and manage accounts for all product types offered by the institution. Account functionality is driven by product definitions and client eligibility criteria.</td><td>Open, onderhou en bestuur rekeninge vir alle produktipes wat deur die instelling aangebied word. Rekeningfunksionaliteit word gedryf deur produkdefinisies en klient-kwalifiseringskriteria.</td></tr>
+        <tr><td>feat-cb-3-title</td><td>Transaction Processing Engine</td><td>Transaksieverwerking</td></tr>
+        <tr><td>feat-cb-3-body</td><td>A comprehensive engine supporting deposits, withdrawals, transfers, payments, and fund transfers to external institutions. Also supports sundry transactions between general ledger accounts, as well as suspended, deferred, and automated transactions.</td><td>'n Omvattende enjin wat stortings, onttrekkings, oordragte, betalings en fondsoordragte na eksterne instellings ondersteun. Ondersteun ook diverse transaksies tussen grootboekrekeninge, asook opgeskorte, uitgestelde en outomatiese transaksies.</td></tr>
+        <tr><td>feat-cb-4-title</td><td>Standing Instructions</td><td>Staande Instruksies</td></tr>
+        <tr><td>feat-cb-4-body</td><td>Automate recurring client transactions based on predefined schedules. Instructions can continue indefinitely or terminate automatically when specified end criteria are met.</td><td>Outomatiseer herhalende klienttransaksies op grond van voorafbepaalde skedules. Instruksies kan onbepaald voortgaan of outomaties beeindig word wanneer gespesifiseerde eindkriteria bereik word.</td></tr>
+        <tr><td>feat-cb-5-title</td><td>Cash Management</td><td>Kontantbestuur</td></tr>
+        <tr><td>feat-cb-5-body</td><td>Manage and control cash holdings issued to officials from the treasury. Tracks cash balances by denomination, records all movements, and supports end-of-day balancing and reconciliation. Multiple teller positions with full support for cash transfers between tellers and the treasury.</td><td>Bestuur en beheer kontantbesit wat aan beamptes uit die tesourie uitgereik word. Spoor kontantbalanse per denominasie na, teken alle bewegings aan, en ondersteun eindedagbalansering en rekonsiliasie. Veelvuldige tellerposisies met volle ondersteuning vir kontantoordragte tussen tellers en die tesourie.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 2 -->
+  <div class="section">
+    <div class="section-title">Feature Group 2 — Product and Pricing Management</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g2</td><td>Product and Pricing Management</td><td>Produk- en Prysbestuur</td></tr>
+        <tr><td>feat-pp-1-title</td><td>Product Definition Engine</td><td>Produkdefinisie-enjin</td></tr>
+        <tr><td>feat-pp-1-body</td><td>A flexible, user-definable product configuration facility that enables the institution to create and maintain unique financial products across various product classes, including savings, loans, investments, and transactional accounts.</td><td>'n Buigsame, gebruikersdefineerbare produkkonfigurasie-fasiliteit wat die instelling in staat stel om unieke finansiele produkte oor verskeie produktklasse te skep en te onderhou, insluitend spaar, lenings, beleggings en transaksionele rekeninge.</td></tr>
+        <tr><td>feat-pp-2-title</td><td>Interest Management</td><td>Rentebestuur</td></tr>
+        <tr><td>feat-pp-2-body</td><td>Interest structures are dynamically configurable on a per-product basis. Define and maintain interest calculation methods, rates, and related parameters for each product, allowing the system to automatically calculate and apply interest according to product-specific rules.</td><td>Rentestrukture is dinamies konfigureerbaar op 'n per-produk-basis. Definieer en onderhou renteberekeningsmetodes, koerse en verwante parameters vir elke produk, wat die stelsel in staat stel om rente outomaties te bereken en toe te pas volgens produkspesifieke reels.</td></tr>
+        <tr><td>feat-pp-3-title</td><td>Fee Management</td><td>Geldbestuur</td></tr>
+        <tr><td>feat-pp-3-body</td><td>Fees are fully user-definable, allowing authorised officials to configure fee structures and the rules governing their application. The system automatically calculates and applies the appropriate fees to transactions.</td><td>Gelde is volledig gebruikersdefineerbaar, wat gemagtigde beamptes in staat stel om geldestrukture en die reels wat hul toepassing beheer te konfigureer. Die stelsel bereken en pas die toepaslike gelde outomaties op transaksies toe.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 3 -->
+  <div class="section">
+    <div class="section-title">Feature Group 3 — Financial Management</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g3</td><td>Financial Management</td><td>Finansiele Bestuur</td></tr>
+        <tr><td>feat-fm-1-title</td><td>General Ledger Management</td><td>Algemene Grootboekbestuur</td></tr>
+        <tr><td>feat-fm-1-body</td><td>A fully integrated general ledger facility automatically records all accounting entries arising from transactions, ensuring complete financial integrity and real-time financial reporting.</td><td>'n Volledig geintegreerde algemene grootboek-fasiliteit teken outomaties alle rekeningkundige inskrywings aan wat uit transaksies voortspruit, wat volledige finansiele integriteit en intydse finansiele verslagdoening verseker.</td></tr>
+        <tr><td>feat-fm-2-title</td><td>Sundry Transactions</td><td>Diverse Transaksies</td></tr>
+        <tr><td>feat-fm-2-body</td><td>Authorised and mandated officials can perform controlled financial transactions directly between general ledger accounts, supporting operational and administrative financial activities.</td><td>Gemagtigde en gemandateerde beamptes kan beheerde finansiele transaksies direk tussen grootboekrekeninge uitvoer, ter ondersteuning van operasionele en administratiewe finansiele aktiwiteite.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 4 -->
+  <div class="section">
+    <div class="section-title">Feature Group 4 — Shareholding and Relationship Management</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g4</td><td>Shareholding and Relationship Management</td><td>Aandeelhouding en Verhoudingsbestuur</td></tr>
+        <tr><td>feat-sr-1-title</td><td>Shareholding Management</td><td>Aandeelhoudingbestuur</td></tr>
+        <tr><td>feat-sr-1-body</td><td>Manage member shareholdings, including the issuance, maintenance, transfer, and redemption of shares. The system also supports the printing and management of share certificates.</td><td>Bestuur lede-aandeelhoudings, insluitend die uitreiking, instandhouding, oordrag en terugkoop van aandele. Die stelsel ondersteun ook die druk en bestuur van aandelesertifikate.</td></tr>
+        <tr><td>feat-sr-2-title</td><td>Relationship Management</td><td>Verhoudingsbestuur</td></tr>
+        <tr><td>feat-sr-2-body</td><td>Capture and maintain relationships between clients, accounts, and related parties, such as representatives, signatories, trustees, beneficiaries, and guardians. All compliance requirements applicable to clients are automatically enforced for related parties.</td><td>Vang en onderhou verhoudings tussen kliente, rekeninge en verwante partye, soos verteenwoordigers, ondertekenaars, trustees, begunstigdes en voogde. Alle nakomingsvereistes wat op kliente van toepassing is, word outomaties vir verwante partye afgedwing.</td></tr>
+        <tr><td>feat-sr-3-title</td><td>Pledge Management</td><td>Pandbestuur</td></tr>
+        <tr><td>feat-sr-3-body</td><td>Manage and track pledged (ceded) accounts, including the registration, maintenance, and monitoring of third-party cessions and associated account restrictions.</td><td>Bestuur en volg verpande (gesedeerde) rekeninge na, insluitend die registrasie, instandhouding en monitering van derdeparty-sessies en gepaardgaande rekeningbeperkings.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 5 -->
+  <div class="section">
+    <div class="section-title">Feature Group 5 — Compliance and Regulatory Management</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g5</td><td>Compliance and Regulatory Management</td><td>Nakoming en Regulatoriese Bestuur</td></tr>
+        <tr><td>feat-cr-1-title</td><td>FICA Management</td><td>FICA-bestuur</td></tr>
+        <tr><td>feat-cr-1-body</td><td>Comprehensive FICA management for all profiles, including clients and related parties. FICA-related documentation is stored electronically within the system for compliance, verification, and audit purposes.</td><td>Omvattende FICA-bestuur vir alle profiele, insluitend kliente en verwante partye. FICA-verwante dokumentasie word elektronies binne die stelsel gestoor vir nakoming, verifikasie en ouditdoeleindes.</td></tr>
+        <tr><td>feat-cr-2-title</td><td>CODI Compliance</td><td>CODI-nakoming</td></tr>
+        <tr><td>feat-cr-2-body</td><td>Supports all data capture, validation, reporting, and submission requirements necessary to comply with the South African Corporation for Deposit Insurance (CODI) regulations.</td><td>Ondersteun alle datavaslegging, validasie, verslagdoening en indieningsvereistes wat nodig is om te voldoen aan die Suid-Afrikaanse Korporasie vir Deposito-versekering (CODI) regulasies.</td></tr>
+        <tr><td>feat-cr-3-title</td><td>Regulatory Data Management</td><td>Regulatoriese Databestuur</td></tr>
+        <tr><td>feat-cr-3-body</td><td>Ensures the capture and maintenance of all information required to meet regulatory, governance, and compliance obligations.</td><td>Verseker die vaslegging en instandhouding van alle inligting wat benodig word om aan regulatoriese, bestuurs- en nakomingsverpligtinge te voldoen.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 6 -->
+  <div class="section">
+    <div class="section-title">Feature Group 6 — Document and Records Management</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g6</td><td>Document and Records Management</td><td>Dokument- en Rekordbestuur</td></tr>
+        <tr><td>feat-dr-1-title</td><td>Document Management</td><td>Dokumentbestuur</td></tr>
+        <tr><td>feat-dr-1-body</td><td>Integrated document management for storing and managing client-related documents, including contracts, wills, trust deeds, identification documents, share certificates, and other supporting records directly within the system.</td><td>Geintegreerde dokumentbestuur vir die berging en bestuur van klientverwante dokumente, insluitend kontrakte, testamente, trustaktes, identifikasiedokumente, aandelesertifikate en ander ondersteunende rekords direk binne die stelsel.</td></tr>
+        <tr><td>feat-dr-2-title</td><td>Electronic Record Retention</td><td>Elektroniese Rekordretensie</td></tr>
+        <tr><td>feat-dr-2-body</td><td>Secure storage and retrieval of supporting documentation and historical records, providing a complete audit trail for regulatory and operational purposes.</td><td>Veilige berging en herwinning van ondersteunende dokumentasie en historiese rekords, wat 'n volledige ouditspoort vir regulatoriese en operasionele doeleindes bied.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 7 -->
+  <div class="section">
+    <div class="section-title">Feature Group 7 — Security, Control and Audit</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g7</td><td>Security, Control and Audit</td><td>Sekuriteit, Beheer en Oudit</td></tr>
+        <tr><td>feat-sc-1-title</td><td>Security and Access Control</td><td>Sekuriteit en Toegangsbeheer</td></tr>
+        <tr><td>feat-sc-1-body</td><td>Role-based security enables administrators to control access to functions, data, and transactions based on user roles and responsibilities.</td><td>Rolgebaseerde sekuriteit stel administrateurs in staat om toegang tot funksies, data en transaksies te beheer op grond van gebruikersrolle en verantwoordelikhede.</td></tr>
+        <tr><td>feat-sc-2-title</td><td>Mandate Management</td><td>Mandaatbestuur</td></tr>
+        <tr><td>feat-sc-2-body</td><td>Allows authorised officials to temporarily delegate specific rights and responsibilities to other officials under controlled and auditable conditions.</td><td>Laat gemagtigde beamptes toe om spesifieke regte en verantwoordelikhede tydelik aan ander beamptes te delegeer onder beheerde en ouditeerbare toestande.</td></tr>
+        <tr><td>feat-sc-3-title</td><td>Audit and Forensic Tracking</td><td>Oudit en Forensiese Opsporing</td></tr>
+        <tr><td>feat-sc-3-body</td><td>Comprehensive audit and forensic tracking records all user activities, transactions, approvals, amendments, and system access. The system maintains a complete audit trail showing who performed each action, when it was performed, and from which workstation or facility.</td><td>Omvattende oudit- en forensiese opsporing teken alle gebruikersaktiwiteite, transaksies, goedkeurings, wysigings en stelseltoegang aan. Die stelsel onderhou 'n volledige ouditspoort wat wys wie elke aksie uitgevoer het, wanneer dit uitgevoer is, en vanaf watter werkstasie of fasiliteit.</td></tr>
+        <tr><td>feat-sc-4-title</td><td>Operational Monitoring</td><td>Operasionele Monitering</td></tr>
+        <tr><td>feat-sc-4-body</td><td>Provides visibility into user activity, system usage, transaction history, and operational events to support governance, oversight, and risk management.</td><td>Bied sigbaarheid in gebruikersaktiwiteit, stelselgebruik, transaksiegeskiedenis en operasionele gebeure om bestuur, toesig en risikobestuur te ondersteun.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEATURES: GROUP 8 -->
+  <div class="section">
+    <div class="section-title">Feature Group 8 — Multi-Language Support</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-g8</td><td>Multi-Language Support</td><td>Meertaalondersteuning</td></tr>
+        <tr><td>feat-ml-1-body</td><td>Dynamically switch the system between English and Afrikaans, with all screens, menus, messages, and reports displayed in the selected language.</td><td>Skakel die stelsel dinamies tussen Engels en Afrikaans, met alle skerms, kieslyste, boodskappe en verslae in die gekose taal vertoon.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- KEY SYSTEM BENEFITS -->
+  <div class="section">
+    <div class="section-title">Key System Benefits</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr class="group-row"><td>feat-benefits-title</td><td>Key System Benefits</td><td>Sleutelstelselvoordele</td></tr>
+        <tr><td>feat-ben-1</td><td>Comprehensive end-to-end banking solution</td><td>Omvattende end-tot-end bankoplossing</td></tr>
+        <tr><td>feat-ben-2</td><td>Fully integrated accounting and general ledger</td><td>Volledig geintegreerde rekeningkunde en algemene grootboek</td></tr>
+        <tr><td>feat-ben-3</td><td>User-definable products, fees, and interest structures</td><td>Gebruikersdefineerbare produkte, gelde en rentestrukture</td></tr>
+        <tr><td>feat-ben-4</td><td>Built-in FICA and CODI compliance</td><td>Ingeboude FICA- en CODI-nakoming</td></tr>
+        <tr><td>feat-ben-5</td><td>Complete audit and forensic tracking</td><td>Volledige oudit- en forensiese opsporing</td></tr>
+        <tr><td>feat-ben-6</td><td>Integrated document management</td><td>Geintegreerde dokumentbestuur</td></tr>
+        <tr><td>feat-ben-7</td><td>Multi-teller cash management</td><td>Meervoudige teller-kontantbestuur</td></tr>
+        <tr><td>feat-ben-8</td><td>Flexible relationship and shareholding management</td><td>Buigsame verhoudings- en aandeelhoudingbestuur</td></tr>
+        <tr><td>feat-ben-9</td><td>Automated recurring transactions</td><td>Outomatiese herhalende transaksies</td></tr>
+        <tr><td>feat-ben-10</td><td>Secure, role-based access control</td><td>Veilige, rolgebaseerde toegangsbeheer</td></tr>
+        <tr><td>feat-ben-11</td><td>Real-time transaction processing and financial posting</td><td>Intydse transaksieverwerking en finansiele boeking</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WHO IT'S FOR -->
+  <div class="section">
+    <div class="section-title">Who It's For Section</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>who-label</td><td>Who It's For</td><td>Vir Wie</td></tr>
+        <tr><td>who-h2</td><td>Built for every form of cooperative finance in South Africa.</td><td>Gebou vir elke vorm van kooperatiewe finansies in Suid-Afrika.</td></tr>
+        <tr><td>who-c1-title</td><td>Cooperative Financial Institutions</td><td>Kooperatiewe Finansiele Instellings</td></tr>
+        <tr><td>who-c1-body</td><td>Registered CFIs operating under the Cooperative Banks Act. Paxiss handles everything from member onboarding to Prudential Authority submissions.</td><td>Geregistreerde KFI's wat onder die Wet op Kooperatiewe Banke werk. Paxiss hanteer alles van lede-onboarding tot Prudensiele Owerheid-indiening.</td></tr>
+        <tr><td>who-c2-title</td><td>Cooperative Banks</td><td>Kooperatiewe Banke</td></tr>
+        <tr><td>who-c2-body</td><td>Licensed cooperative banks requiring a full core banking platform without the enterprise price tag or the adaptation overhead of commercial systems.</td><td>Gelisensieerde kooperatiewe banke wat 'n volledige kernbankplatform benodig sonder die entreprys-pryskaartjie of die aanpassingsoorhoofkoste van kommersiele stelsels.</td></tr>
+        <tr><td>who-c3-title</td><td>Credit Unions</td><td>Kredietunies</td></tr>
+        <tr><td>who-c3-body</td><td>Community-based credit unions seeking to formalise and strengthen operations without losing the human character that defines them.</td><td>Gemeenskapsgebaseerde kredietunies wat hul bedrywighede wil formaliseer en versterk sonder om die menslike karakter wat hulle definieer te verloor.</td></tr>
+        <tr><td>who-c4-title</td><td>Stokvel Organisations</td><td>Stokvelbedrywe</td></tr>
+        <tr><td>who-c4-body</td><td>Savings groups and stokvel management bodies moving toward transparency and formalisation. Paxiss makes the transition from informal to compliant manageable.</td><td>Spaargroepe en stokvelbestuurliggame wat na deursigtigheid en formalisering beweeg. Paxiss maak die oorgang van informeel na voldoend hanteerbaar.</td></tr>
+        <tr><td>who-c5-title</td><td>Development Finance Entities</td><td>Ontwikkelingsfinansieringsinstansies</td></tr>
+        <tr><td>who-c5-body</td><td>NGOs, government agencies, and capacity-building organisations supporting CFI formation, compliance, and governance across South Africa.</td><td>NRO's, staatsagentskappe en kapasiteitsbouende organisasies wat KFI-vorming, nakoming en bestuur regoor Suid-Afrika ondersteun.</td></tr>
+        <tr><td>who-cta-title</td><td>Not sure where you fit?</td><td>Nie seker waar u inpas nie?</td></tr>
+        <tr><td>who-cta-body</td><td>The free consultation exists precisely for this. Tell us about your institution and we'll tell you honestly whether Paxiss is the right fit.</td><td>Die gratis konsultasie bestaan juis hiervoor. Vertel ons van u instelling en ons sal eerlik se of Paxiss die regte passing is.</td></tr>
+        <tr><td>who-cta-link</td><td>Book a conversation</td><td>Bespreek 'n gesprek</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WHY IDE SYSTEMS -->
+  <div class="section">
+    <div class="section-title">Why IDE Systems Section</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>ide-label</td><td>Why IDE Systems</td><td>Waarom IDE Systems</td></tr>
+        <tr><td>ide-h2</td><td>40 years of banking experience. One product built from that knowledge.</td><td>40 jaar bankervaring. Een produk gebou uit daardie kennis.</td></tr>
+        <tr><td>ide-p1</td><td>The team behind IDE Systems brings 40 years of combined experience in South African banking. That includes building and implementing systems at major commercial banks, the kind of work that teaches you what reliability and compliance actually look like at scale.</td><td>Die span agter IDE Systems bring 40 jaar gesamentlike ervaring in Suid-Afrikaanse bankwese. Dit sluit die bou en implementering van stelsels by groot kommersiele banke in, die soort werk wat u leer wat betroubaarheid en nakoming werklik op skaal lyk.</td></tr>
+        <tr><td>ide-p2</td><td>When they saw cooperative financial institutions struggling with software that was never designed for them, they built Paxiss from the ground up. Not adapted from a commercial platform. Not reskinned from a foreign product. Purpose-made for the regulatory and community realities of South African CFIs.</td><td>Toe hulle sien hoe kooperatiewe finansiele instellings sukkel met sagteware wat nooit vir hulle ontwerp is nie, het hulle Paxiss van die grond af gebou. Nie aangepas van 'n kommersiele platform nie. Nie herbeklee van 'n buitelandse produk nie. Doelgemaak vir die regulatoriese en gemeenskapsrealiteite van Suid-Afrikaanse KFI's.</td></tr>
+        <tr><td>ide-p3</td><td>We are a Pretoria team. We understand the Cooperative Banks Act the way accountants understand the Tax Act: not as a checklist, but as a reality we work inside every day.</td><td>Ons is 'n Pretoriase span. Ons verstaan die Wet op Kooperatiewe Banke soos rekenmeesters die Belastingwet verstaan: nie as 'n kontrolelys nie, maar as 'n realiteit waarin ons elke dag werk.</td></tr>
+        <tr><td>ide-t2-title</td><td>Cooperative Banks Act No. 40 of 2007</td><td>Wet op Kooperatiewe Banke Nr. 40 van 2007</td></tr>
+        <tr><td>ide-t2-body</td><td>Paxiss is designed around this legislation. Not retrofitted to it after the fact.</td><td>Paxiss is rondom hierdie wetgewing ontwerp. Nie agteraf daaraan aangepas nie.</td></tr>
+        <tr><td>ide-t3-title</td><td>Full customisation, no exceptions</td><td>Volledige aanpassing, geen uitsonderings</td></tr>
+        <tr><td>ide-t3-body</td><td>No two CFIs are structured identically. Paxiss adapts to your governance model, product range, and member workflows.</td><td>Geen twee KFI's het dieselfde struktuur nie. Paxiss pas aan by u bestuursmodel, produkspektrum en ledewerksvloeie.</td></tr>
+        <tr><td>ide-t4-title</td><td>Locally built, locally supported</td><td>Plaaslik gebou, plaaslik ondersteun</td></tr>
+        <tr><td>ide-t4-body</td><td>Pretoria-based team. You're not raising a ticket into a foreign helpdesk. You're calling people who understand your context.</td><td>Pretoriase span. U stel nie 'n kaartjie in by 'n buitelandse hulptoonbank nie. U bel mense wat u konteks verstaan.</td></tr>
+        <tr><td>ide-t5-title</td><td>Free consultation, always</td><td>Gratis konsultasie, altyd</td></tr>
+        <tr><td>ide-t5-body</td><td>No obligation. We'd rather give you an honest hour of our time than sell you something that isn't the right fit.</td><td>Geen verpligting nie. Ons gee eerder 'n eerlike uur van ons tyd as om u iets te verkoop wat nie die regte passing is nie.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DEPLOYMENT -->
+  <div class="section">
+    <div class="section-title">Deployment Options Section</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>dep-label</td><td>Deployment Options</td><td>Ontplooiingsopsies</td></tr>
+        <tr><td>dep-h2</td><td>Your infrastructure decision.</td><td>U infrastruktuurkeuse.</td></tr>
+        <tr><td>dep-copy</td><td>Paxiss is the same platform whether you run it in the cloud or on your own servers. The deployment model doesn't change what the software does.</td><td>Paxiss is dieselfde platform of u dit in die wolk of op u eie bedieners laat loop. Die ontplooiingsmodel verander nie wat die sagteware doen nie.</td></tr>
+        <tr><td>dep-saas-label</td><td>SaaS</td><td>SaaS</td></tr>
+        <tr><td>dep-saas-h3</td><td>Managed Cloud Hosting</td><td>Bestuurde Wolkgasheer</td></tr>
+        <tr><td>dep-saas-p</td><td>We handle the infrastructure, updates, backups, and uptime monitoring. Your team logs in and works. No server costs, no IT overhead, no maintenance window surprises.</td><td>Ons hanteer die infrastruktuur, opdaterings, rugsteun en stilstandtyd-monitering. U span meld aan en werk. Geen bedienerkoste, geen IT-oorhoofse, geen instandhoudingsverrassings nie.</td></tr>
+        <tr><td>dep-saas-li1</td><td>No local IT infrastructure required</td><td>Geen plaaslike IT-infrastruktuur benodig nie</td></tr>
+        <tr><td>dep-saas-li2</td><td>Automatic updates and security patches</td><td>Outomatiese opdaterings en sekuriteitsrelings</td></tr>
+        <tr><td>dep-saas-li3</td><td>Predictable monthly cost</td><td>Voorspelbare maandelikse koste</td></tr>
+        <tr><td>dep-saas-li4</td><td>Suited for smaller institutions with limited IT capacity</td><td>Geskik vir kleiner instellings met beperkte IT-kapasiteit</td></tr>
+        <tr><td>dep-ih-label</td><td>In-House</td><td>Ter Plaatse</td></tr>
+        <tr><td>dep-ih-h3</td><td>On-Premise Installation</td><td>Ter Plaatse Installasie</td></tr>
+        <tr><td>dep-ih-p</td><td>Paxiss runs on your own servers. You control the data environment, the access, and the integration architecture. Preferred by institutions with data sovereignty requirements or existing IT capacity.</td><td>Paxiss loop op u eie bedieners. U beheer die data-omgewing, die toegang en die integrasie-argitektuur. Verkies deur instellings met datasoewereiniteitsvereistes of bestaande IT-kapasiteit.</td></tr>
+        <tr><td>dep-ih-li1</td><td>Full data sovereignty on your infrastructure</td><td>Volle datasoewereiniteit op u infrastruktuur</td></tr>
+        <tr><td>dep-ih-li2</td><td>Deeper integration with internal systems</td><td>Dieper integrasie met interne stelsels</td></tr>
+        <tr><td>dep-ih-li3</td><td>Preferred for regulated data environments</td><td>Verkies vir gereguleerde data-omgewings</td></tr>
+        <tr><td>dep-ih-li4</td><td>Full implementation support from IDE Systems</td><td>Volledige implementeringsondersteuning van IDE Systems</td></tr>
+        <tr><td>dep-strip1-h</td><td>Multi-language support</td><td>Meertaalondersteuning</td></tr>
+        <tr><td>dep-strip1-p</td><td>English and Afrikaans across the platform. Additional language support available on request.</td><td>Engels en Afrikaans regdeur die platform. Bykomende taalondersteuning op versoek beskikbaar.</td></tr>
+        <tr><td>dep-strip2-h</td><td>GL and accounting integration</td><td>GL en rekeningkundige integrasie</td></tr>
+        <tr><td>dep-strip2-p</td><td>Connects to external accounting systems and BI tools. No duplicate data entry across platforms.</td><td>Verbind aan eksterne rekeningkundige stelsels en BI-instrumente. Geen duplikaat data-inskrywing oor platforms nie.</td></tr>
+        <tr><td>dep-strip3-h</td><td>Web, mobile, and desktop</td><td>Web, mobiel en lessenaar</td></tr>
+        <tr><td>dep-strip3-p</td><td>Platform-agnostic access. Staff and administrators work from any device, anywhere.</td><td>Platformonafhanklike toegang. Personeel en administrateurs werk van enige toestel, oral.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-title">FAQ Section</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>faq-label</td><td>Frequently Asked Questions</td><td>Gereelde Vrae</td></tr>
+        <tr><td>faq-h2</td><td>Questions worth asking before you decide.</td><td>Vrae die moeite werd om te vra voor u besluit.</td></tr>
+        <tr><td>faq-q1</td><td>Is Paxiss compliant with the Prudential Authority and Cooperative Banks Act requirements?</td><td>Is Paxiss voldoend aan die Prudensiele Owerheid en Wet op Kooperatiewe Banke vereistes?</td></tr>
+        <tr><td>faq-a1</td><td>Yes. Paxiss is purpose-built for the South African regulatory environment. The system includes FICA compliance tools, CODI-compliant reporting, and audit infrastructure designed specifically for registered cooperative financial institutions under the Cooperative Banks Act No. 40 of 2007. Compliance is not an add-on module. It is baked into how the system works.</td><td>Ja. Paxiss is doelgebou vir die Suid-Afrikaanse regulatoriese omgewing. Die stelsel sluit FICA-nakomingshulpmiddels, CODI-voldoende verslagdoening en ouditinfrastruktuur in, spesifiek ontwerp vir geregistreerde kooperatiewe finansiele instellings onder die Wet op Kooperatiewe Banke Nr. 40 van 2007. Nakoming is nie 'n byvoegsel nie. Dit is ingebou in hoe die stelsel werk.</td></tr>
+        <tr><td>faq-q2</td><td>Can Paxiss be deployed on our own servers, or is it only available as a cloud service?</td><td>Kan Paxiss op ons eie bedieners ontplooi word, of is dit slegs as 'n wolkdiens beskikbaar?</td></tr>
+        <tr><td>faq-a2</td><td>Both. Paxiss offers a fully managed SaaS deployment or an in-house installation on your own infrastructure. The decision comes down to your IT capacity, data governance preferences, and regulatory context. Our team will help you work through that during your free consultation, honestly and without pressure toward either option.</td><td>Albei. Paxiss bied 'n volledig bestuurde SaaS-ontplooiing of 'n ter plaatse installasie op u eie infrastruktuur. Die keuse kom neer op u IT-kapasiteit, datagouwernaansvoorkeure en regulatoriese konteks. Ons span sal u deur dit help tydens u gratis konsultasie, eerlik en sonder druk na enige opsie.</td></tr>
+        <tr><td>faq-q3</td><td>How long does implementation take, and what support is provided during onboarding?</td><td>Hoe lank neem implementering, en watter ondersteuning word tydens aan-boord-bring verskaf?</td></tr>
+        <tr><td>faq-a3</td><td>Timelines vary based on the institution's size, existing systems, and the modules required. IDE Systems provides hands-on onboarding throughout: data migration assistance, staff training, and post-go-live support. Implementation is treated as a partnership handoff, not a contract fulfilment. You don't go live until you're confident.</td><td>Tydslyne wissel na gelang van die instelling se grootte, bestaande stelsels en die modules wat benodig word. IDE Systems bied deurgaans praktiese aan-boord-bring: datamigrasiehulp, personeelsopleiding en na-bekendstelling-ondersteuning. Implementering word as 'n venootskapsoorhandiging behandel, nie 'n kontraknakomming nie. U gaan nie lewendig voordat u seker is nie.</td></tr>
+        <tr><td>faq-q4</td><td>Can the system be customised to our institution's specific products and workflows?</td><td>Kan die stelsel aangepas word by ons instelling se spesifieke produkte en werksvloeie?</td></tr>
+        <tr><td>faq-a4</td><td>Yes. Full customisation is one of the core differences between Paxiss and commercial banking software. No two cooperative institutions are structured identically. Paxiss adapts to your specific loan products, savings structures, member management workflows, and governance model. Customisation is part of the implementation, not an expensive extra.</td><td>Ja. Volledige aanpassing is een van die kernverskille tussen Paxiss en kommersiele banksagteware. Geen twee kooperatiewe instellings het dieselfde struktuur nie. Paxiss pas aan by u spesifieke leningsprodukte, spaarstruktuur, ledebestuurswerksvloeie en bestuursmodel. Aanpassing is deel van die implementering, nie 'n duur ekstra nie.</td></tr>
+        <tr><td>faq-q5</td><td>What languages does Paxiss support, and is it accessible to members in rural areas?</td><td>Watter tale ondersteun Paxiss, en is dit toeganklik vir lede in landelike gebiede?</td></tr>
+        <tr><td>faq-a5</td><td>Paxiss supports English and Afrikaans across the platform. This matters for institutions serving communities in predominantly Afrikaans-speaking regions, or where operational staff require Afrikaans interfaces. Additional language support can be scoped based on the institution's needs. The platform is web-accessible, meaning staff in rural branches can work from any internet-connected device.</td><td>Paxiss ondersteun Engels en Afrikaans regdeur die platform. Dit is belangrik vir instellings wat gemeenskappe in hoofsaaklik Afrikaanssprekende gebiede bedien, of waar bedryfspersoneel Afrikaanse koppelvlakke benodig. Bykomende taalondersteuning kan uitgebrei word na gelang van die instelling se behoeftes. Die platform is web-toeganklik, wat beteken dat personeel in landelike takke van enige internet-gekoppelde toestel kan werk.</td></tr>
+        <tr><td>faq-q6</td><td>How does Paxiss handle FICA compliance and CODI reporting?</td><td>Hoe hanteer Paxiss FICA-nakoming en CODI-verslagdoening?</td></tr>
+        <tr><td>faq-a6</td><td>FICA compliance tools are built into the member onboarding and transaction workflows. Customer due diligence, KYC record management, and transaction monitoring are part of the daily process, not a separate compliance layer managed elsewhere. CODI reporting is automated through the general ledger module, generating compliant financial statements directly from live data. Month-end reporting stops being a crisis.</td><td>FICA-nakomingshulpmiddels is ingebou in die lede-onboarding en transaksieverwerkingswerksvloeie. Kliente-sorgvuldigheid, KYC-rekordbestuur en transaksie-monitering is deel van die daaglikse proses, nie 'n aparte nakomingslaag wat elders bestuur word nie. CODI-verslagdoening is outomaties deur die algemene grootboekmodule, wat voldoende finansiele state direk uit lewende data genereer. Maandeindverslagdoening hou op om 'n krisis te wees.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="section">
+    <div class="section-title">Footer</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>foot-tagline</td><td>Purpose-built core banking software for South African cooperative financial institutions. Locally developed, locally supported, regulatory-grade.</td><td>Doelgeboude kernbanksagteware vir Suid-Afrikaanse kooperatiewe finansiele instellings. Plaaslik ontwikkel, plaaslik ondersteun, regulatories-gesertifiseerd.</td></tr>
+        <tr class="group-row"><td>foot-col1-heading</td><td>Platform</td><td>Platform</td></tr>
+        <tr><td>foot-link-features</td><td>Core Banking Features</td><td>Kernbankkenmerke</td></tr>
+        <tr><td>foot-link-deployment</td><td>Deployment Options</td><td>Ontplooiingsopsies</td></tr>
+        <tr><td>foot-link-who</td><td>Who Paxiss Is For</td><td>Vir Wie Paxiss Is</td></tr>
+        <tr><td>foot-link-faq</td><td>FAQ</td><td>Vrae</td></tr>
+        <tr class="group-row"><td>foot-col2-heading</td><td>Get Started</td><td>Begin</td></tr>
+        <tr><td>foot-link-consult</td><td>Book a Free Consultation</td><td>Bespreek 'n Gratis Konsultasie</td></tr>
+        <tr><td>foot-link-checklist</td><td>Download CFI Checklist</td><td>Laai KFI-kontrolelys af</td></tr>
+        <tr><td>foot-copyright</td><td>&copy; 2026 IDE Systems. All rights reserved. Paxiss is a product of IDE Systems, Pretoria, South Africa. Website design by Flint and Fuel Creative.</td><td>&copy; 2026 IDE Systems. Alle regte voorbehou. Paxiss is 'n produk van IDE Systems, Pretoria, Suid-Afrika. Webwerf ontwerp deur Flint and Fuel Creative.</td></tr>
+        <tr><td>foot-badge1</td><td>Cooperative Banks Act No. 40 of 2007</td><td>Wet op Kooperatiewe Banke Nr. 40 van 2007</td></tr>
+        <tr><td>foot-badge2</td><td>FICA compliant</td><td>FICA-voldoend</td></tr>
+        <tr><td>foot-badge3</td><td>CODI aligned</td><td>CODI-belyn</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CTA -->
+  <div class="section">
+    <div class="section-title">CTA / Contact Section</div>
+    <table>
+      <thead><tr><th>Key</th><th>English</th><th>Afrikaans</th></tr></thead>
+      <tbody>
+        <tr><td>cta-label</td><td>Free Consultation</td><td>Gratis Konsultasie</td></tr>
+        <tr><td>cta-h2</td><td>Talk to the people&lt;br&gt;who built this.</td><td>Praat met die mense&lt;br&gt;wat dit gebou het.</td></tr>
+        <tr><td>cta-body</td><td>One conversation is usually enough to know if Paxiss is the right fit. No pitch deck, no commitment. An honest discussion about where you are and what you need.</td><td>Een gesprek is gewoonlik genoeg om te weet of Paxiss die regte passing is. Geen aanbiedingsplatform, geen verbintenis. 'n Eerlike bespreking oor waar u is en wat u nodig het.</td></tr>
+        <tr><td>cta-btn-call</td><td>Call 012 346 6551</td><td>Skakel 012 346 6551</td></tr>
+        <tr><td>cta-btn-email</td><td>Email Us Directly</td><td>Stuur ons 'n E-pos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Make every Afrikaans cell (3rd column, non-header) editable
+  var originals = {};
+  document.querySelectorAll('tbody tr').forEach(function(row) {
+    var cells = row.querySelectorAll('td');
+    if (cells.length < 3) return;
+    var keyCell = cells[0];
+    var afCell = cells[2];
+    var key = keyCell.textContent.trim();
+    originals[key] = afCell.innerHTML;
+    afCell.setAttribute('contenteditable', 'true');
+    afCell.dataset.key = key;
+    afCell.addEventListener('input', function() {
+      var changed = afCell.innerHTML.trim() !== originals[key].trim();
+      afCell.classList.toggle('changed', changed);
+      updateCount();
+    });
+    afCell.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        var rows = Array.from(document.querySelectorAll('td[contenteditable]'));
+        var idx = rows.indexOf(afCell);
+        var next = rows[idx + (e.shiftKey ? -1 : 1)];
+        if (next) { next.focus(); next.scrollIntoView({ block: 'center' }); }
+      }
+    });
+  });
+
+  function updateCount() {
+    var changed = document.querySelectorAll('td.changed').length;
+    var el = document.getElementById('change-count');
+    el.textContent = changed + ' change' + (changed !== 1 ? 's' : '');
+    el.style.display = changed > 0 ? 'inline' : 'none';
+  }
+
+  function exportChanges() {
+    var lines = [];
+    document.querySelectorAll('td.changed[contenteditable]').forEach(function(cell) {
+      var key = cell.dataset.key;
+      var text = cell.innerText.trim();
+      lines.push(key + ':\n' + text);
+    });
+    if (lines.length === 0) {
+      alert('No changes made yet. Edit the Afrikaans cells first.');
+      return;
+    }
+    document.getElementById('export-text').value = lines.join('\n\n---\n\n');
+    document.getElementById('copy-output').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+  }
+
+  function copyToClipboard() {
+    var ta = document.getElementById('export-text');
+    ta.select();
+    document.execCommand('copy');
+    var btn = ta.nextElementSibling.querySelector('button');
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy to clipboard'; }, 2000);
+  }
+
+  function closeExport() {
+    document.getElementById('copy-output').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all Afrikaans cells to the original translations?')) return;
+    document.querySelectorAll('td[contenteditable]').forEach(function(cell) {
+      var key = cell.dataset.key;
+      cell.innerHTML = originals[key];
+      cell.classList.remove('changed');
+    });
+    updateCount();
+  }
+</script>
+</body>
+</html>
