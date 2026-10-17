@@ -27,10 +27,20 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      # Publish only the files the live site uses. Briefs, change notes,
+      # review pages and original photo files stay in the repo but are not served.
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp index.html robots.txt sitemap.xml og-image.jpg favicon.ico favicon-48.png apple-touch-icon.png \
+             PAXISS-logo-white.png IDE-Systems-Logo-White.png .nojekyll _site/
+          cp -r lang _site/lang
+          [ -f CNAME ] && cp CNAME _site/ || true
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
